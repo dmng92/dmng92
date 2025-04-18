@@ -6,6 +6,9 @@
   <title>Galería</title>
   <link href="https://fonts.googleapis.com/css2?family=Favorit&display=swap" rel="stylesheet">
   <style>
+    html {
+      scroll-behavior: smooth;
+    }
     body {
       margin: 0;
       font-family: 'Favorit', sans-serif;
@@ -29,17 +32,58 @@
       width: 100%;
       height: auto;
       display: block;
-      border-radius: 5px;
-      transition: transform 0.3s;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
     }
     .grid img:hover {
-      transform: scale(1.02);
+      transform: scale(1.04);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+    }
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #666;
+      font-size: 0.9em;
+    }
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 999;
+    }
+    .lightbox img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 8px;
+    }
+    .lightbox.show {
+      visibility: visible;
+      opacity: 1;
     }
   </style>
 </head>
 <body>
   <h1>thisisaformicatable</h1>
   <div class="grid" id="galeria"></div>
+
+  <div class="lightbox" id="lightbox">
+    <img src="" alt="Imagen ampliada" id="lightbox-img">
+  </div>
+
+  <footer>
+    © 2024 thisisaformicatable
+  </footer>
 
   <script>
     const galeria = document.getElementById('galeria');
@@ -50,8 +94,21 @@
       const numero = i.toString().padStart(2, '0');
       img.src = `imagenes/foto${numero}.jpg`;
       img.alt = `foto${numero}`;
+      img.addEventListener('click', () => mostrarLightbox(img.src));
       galeria.appendChild(img);
     }
+
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+
+    function mostrarLightbox(src) {
+      lightboxImg.src = src;
+      lightbox.classList.add('show');
+    }
+
+    lightbox.addEventListener('click', () => {
+      lightbox.classList.remove('show');
+    });
   </script>
 </body>
 </html>

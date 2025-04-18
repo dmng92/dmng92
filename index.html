@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Galería</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background-color: #1c1c1c;
+      color: #ccc;
+    }
+    h1 {
+      text-align: center;
+      color: #ffcc00;
+      margin: 20px 0;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 10px;
+      padding: 10px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .grid img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 5px;
+      transition: transform 0.3s;
+    }
+    .grid img:hover {
+      transform: scale(1.02);
+    }
+  </style>
+</head>
+<body>
+  <h1>thisisaformicatable</h1>
+  <div class="grid">
+    <img src="imagenes/foto1.jpg" alt="foto1">
+    <img src="imagenes/foto2.jpg" alt="foto2">
+    <img src="imagenes/foto3.jpg" alt="foto3">
+    <img src="imagenes/foto4.jpg" alt="foto4">
+    <!-- Agrega más imágenes aquí -->
+  </div>
+</body>
+</html>

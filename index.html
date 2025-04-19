@@ -152,23 +152,22 @@
 let imagenesPagina = [];
 let imagenActualIndex = 0;
 
-    function renderGaleria() {
-      galeria.innerHTML = '';
-      const inicio = (paginaActual - 1) * porPagina;
-      const fin = inicio + porPagina;
-      const imagenesPagina = imagenes.slice(inicio, fin);
-      const pagina
+function renderGaleria() {
+  galeria.innerHTML = '';
+  const inicio = (paginaActual - 1) * porPagina;
+  const fin = inicio + porPagina;
+  imagenesPagina = imagenes.slice(inicio, fin);
 
-      pagina.forEach(nombre => {
-        const img = document.createElement('img');
-        img.src = `imagenes/${nombre}`;
-        img.loading = 'lazy';
-        img.alt = nombre;
-        img.addEventListener('click', () => mostrarLightbox(img.src, index));
-        galeria.appendChild(img);
-      });
+  imagenesPagina.forEach((nombre, index) => {
+    const img = document.createElement('img');
+    img.src = `imagenes/${nombre}`;
+    img.loading = 'lazy';
+    img.alt = nombre;
+    img.addEventListener('click', () => mostrarLightbox(img.src, index));
+    galeria.appendChild(img);
+  });
+}
 
-          }
 
     function cambiarPagina(direccion) {
       const totalPaginas = Math.ceil(imagenes.length / porPagina);

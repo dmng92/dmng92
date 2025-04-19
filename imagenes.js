@@ -2,7 +2,6 @@ const imagenes = [
   "FnUPurFXkAIBbsa.jfif",
   "2AK2EDTR5ZC7THOKFVLNTNUNOY.webp",
   "Stanley-Kubrick.webp",
-  "ssstwitter.com_1708078266883.mp4",
   "GO16KyIWgAEdNWi.jpeg",
   "volveralfuturo3p-v0-jElFuGEdOz7YrJ0nKgryNQ8qki9krLkeXhlr9OqtlDc.webp",
   "m3actzst1fx01.jpg",

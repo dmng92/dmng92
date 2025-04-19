@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const carpeta = './imagenes';
-const extensionesValidas = ['.jpg', '.jpeg', '.png', '.webp', '.JPG', '.JPEG', '.PNG', '.WEBP', '.jfif', '.mp4'];
+const extensionesValidas = ['.jpg', '.jpeg', '.png', '.webp', '.JPG', '.JPEG', '.PNG', '.WEBP', '.jfif'];
 
 if (!fs.existsSync(carpeta)) {
   console.error('❌ La carpeta "imagenes" no existe');

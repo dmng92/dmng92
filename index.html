@@ -17,9 +17,25 @@
     }
     h1 {
       text-align: center;
-      color: #826b30;
+      color: #8b7c41;
       margin: 20px 0;
       font-size: 5em;
+    }
+    .controls {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .controls button {
+      background-color: #333;
+      color: #ccc;
+      border: none;
+      padding: 10px 20px;
+      margin: 0 5px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    .controls button:hover {
+      background-color: #555;
     }
     .grid {
       display: grid;
@@ -31,9 +47,10 @@
     }
     .grid img {
       width: 100%;
+      max-width: 2000px;
       height: auto;
       display: block;
-      border-radius: 0px;
+      border-radius: 8px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.2);
       transition: transform 0.3s, box-shadow 0.3s;
       cursor: pointer;
@@ -66,16 +83,24 @@
     .lightbox img {
       max-width: 90%;
       max-height: 90%;
-      border-radius: 0px;
+      border-radius: 8px;
     }
     .lightbox.show {
       visibility: visible;
       opacity: 1;
     }
+    .half-size {
+      transform: scale(0.5);
+      transform-origin: center;
+    }
   </style>
 </head>
 <body>
   <h1>thisisaformicatable</h1>
+  <div class="controls">
+    <button onclick="cambiarTamanio('50')">Ver al 50%</button>
+    <button onclick="cambiarTamanio('100')">Ver al 100%</button>
+  </div>
   <div class="grid" id="galeria"></div>
 
   <div class="lightbox" id="lightbox">
@@ -86,18 +111,17 @@
     © 2024 thisisaformicatable
   </footer>
 
+  <script src="imagenes.js"></script>
   <script>
     const galeria = document.getElementById('galeria');
-    const totalImagenes = 30; // Cambiá este número según cuántas imágenes tengas
 
-    for (let i = 1; i <= totalImagenes; i++) {
+    imagenes.forEach(nombre => {
       const img = document.createElement('img');
-      const numero = i.toString().padStart(2, '0');
-      img.src = `imagenes/foto${numero}.jpg`;
-      img.alt = `foto${numero}`;
+      img.src = `imagenes/${nombre}`;
+      img.alt = nombre;
       img.addEventListener('click', () => mostrarLightbox(img.src));
       galeria.appendChild(img);
-    }
+    });
 
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
@@ -110,6 +134,17 @@
     lightbox.addEventListener('click', () => {
       lightbox.classList.remove('show');
     });
+
+    function cambiarTamanio(porcentaje) {
+      const imagenes = document.querySelectorAll('.grid img');
+      imagenes.forEach(img => {
+        if (porcentaje === '50') {
+          img.classList.add('half-size');
+        } else {
+          img.classList.remove('half-size');
+        }
+      });
+    }
   </script>
 </body>
 </html>

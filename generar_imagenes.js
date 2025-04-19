@@ -1,15 +1,19 @@
-// generar_imagenes.js
 const fs = require('fs');
 const path = require('path');
 
 const carpeta = './imagenes';
-const extensionesValidas = ['.jpg', '.jpeg', '.png', '.webp'];
+const extensionesValidas = ['.jpg', '.jpeg', '.png', '.webp', '.JPG', '.JPEG', '.PNG', '.WEBP', '.jfif', '.mp4'];
+
+if (!fs.existsSync(carpeta)) {
+  console.error('❌ La carpeta "imagenes" no existe');
+  process.exit(1);
+}
 
 const archivos = fs.readdirSync(carpeta)
-  .filter(archivo => extensionesValidas.includes(path.extname(archivo).toLowerCase()))
-  .sort((a, b) => fs.statSync(path.join(carpeta, a)).mtimeMs - fs.statSync(path.join(carpeta, b)).mtimeMs); // orden cronológico
+  .filter(archivo => extensionesValidas.includes(path.extname(archivo)))
+  .sort((a, b) => fs.statSync(path.join(carpeta, a)).mtimeMs - fs.statSync(path.join(carpeta, b)).mtimeMs);
 
 const contenido = `const imagenes = ${JSON.stringify(archivos, null, 2)};`;
 
 fs.writeFileSync('imagenes.js', contenido);
-console.log('📷 Se generó imagenes.js con', archivos.length, 'archivos.');
+console.log('✅ imagenes.js generado con', archivos.length, 'archivo(s).');

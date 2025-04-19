@@ -2,6 +2,8 @@ const imagenes = [
   "FnUPurFXkAIBbsa.jfif",
   "2AK2EDTR5ZC7THOKFVLNTNUNOY.webp",
   "Stanley-Kubrick.webp",
+  "IMG-20231230-WA0016.jpg",
+  "IMG-20231230-WA0017.jpg",
   "GO16KyIWgAEdNWi.jpeg",
   "volveralfuturo3p-v0-jElFuGEdOz7YrJ0nKgryNQ8qki9krLkeXhlr9OqtlDc.webp",
   "m3actzst1fx01.jpg",

@@ -1,4 +1,11 @@
 {
+  "name": "galeria-fotos",
+  "version": "1.0.0",
+  "description": "Galería web con carga dinámica de imágenes",
+  "main": "index.html",
+  "scripts": {
+    "watch": "chokidar 'imagenes/*' -c 'node generar_imagenes.js'"
+  },
   "devDependencies": {
     "chokidar-cli": "^3.0.0"
   }

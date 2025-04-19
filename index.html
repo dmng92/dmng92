@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>thisisaformicatable</title>
+  <title>Galería</title>
   <link href="https://fonts.googleapis.com/css2?family=Favorit&display=swap" rel="stylesheet">
   <style>
     html {
@@ -17,39 +17,23 @@
     }
     h1 {
       text-align: center;
-      color: #8b7c41;
+      color: #ffcc00;
       margin: 20px 0;
-      font-size: 5em;
-    }
-    .controls {
-      text-align: center;
-      margin-bottom: 10px;
-    }
-    .controls button {
-      background-color: #333;
-      color: #ccc;
-      border: none;
-      padding: 10px 20px;
-      margin: 0 5px;
-      cursor: pointer;
-      border-radius: 5px;
-    }
-    .controls button:hover {
-      background-color: #555;
+      font-size: 3em;
     }
     .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 10px;
-      padding: 10px;
+      column-count: 3;
+      column-gap: 10px;
       max-width: 1200px;
       margin: 0 auto;
+      padding: 10px;
     }
     .grid img {
       width: 100%;
-      max-width: 2000px;
       height: auto;
-      display: block;
+      max-width: 2000px;
+      display: inline-block;
+      margin-bottom: 10px;
       border-radius: 8px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.2);
       transition: transform 0.3s, box-shadow 0.3s;
@@ -73,6 +57,7 @@
       height: 100vh;
       background: rgba(0,0,0,0.9);
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       visibility: hidden;
@@ -82,35 +67,54 @@
     }
     .lightbox img {
       max-width: 90%;
-      max-height: 90%;
+      max-height: 80vh;
       border-radius: 8px;
     }
     .lightbox.show {
       visibility: visible;
       opacity: 1;
     }
-    .half-size {
+    .zoom-buttons {
+      margin: 10px;
+    }
+    .zoom-buttons button {
+      background-color: #333;
+      color: #ccc;
+      border: none;
+      padding: 10px 20px;
+      margin: 0 5px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    .zoom-buttons button:hover {
+      background-color: #555;
+    }
+    .half-size-img {
       transform: scale(0.5);
-      transform-origin: center;
     }
   </style>
 </head>
 <body>
   <h1>thisisaformicatable</h1>
-
   <div class="grid" id="galeria"></div>
 
   <div class="lightbox" id="lightbox">
     <img src="" alt="Imagen ampliada" id="lightbox-img">
+    <div class="zoom-buttons">
+      <button onclick="cambiarZoom('50')">Ver al 50%</button>
+      <button onclick="cambiarZoom('100')">Ver al 100%</button>
+    </div>
   </div>
 
   <footer>
-    © whatyearisthis
+    © 2024 thisisaformicatable
   </footer>
 
   <script src="imagenes.js"></script>
   <script>
     const galeria = document.getElementById('galeria');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
 
     imagenes.forEach(nombre => {
       const img = document.createElement('img');
@@ -120,27 +124,24 @@
       galeria.appendChild(img);
     });
 
-    const lightbox = document.getElementById('lightbox');
-    const lightboxImg = document.getElementById('lightbox-img');
-
     function mostrarLightbox(src) {
       lightboxImg.src = src;
+      lightboxImg.classList.remove('half-size-img');
       lightbox.classList.add('show');
     }
 
-    lightbox.addEventListener('click', () => {
-      lightbox.classList.remove('show');
+    lightbox.addEventListener('click', (e) => {
+      if (!e.target.closest('.zoom-buttons')) {
+        lightbox.classList.remove('show');
+      }
     });
 
-    function cambiarTamanio(porcentaje) {
-      const imagenes = document.querySelectorAll('.grid img');
-      imagenes.forEach(img => {
-        if (porcentaje === '50') {
-          img.classList.add('half-size');
-        } else {
-          img.classList.remove('half-size');
-        }
-      });
+    function cambiarZoom(porcentaje) {
+      if (porcentaje === '50') {
+        lightboxImg.classList.add('half-size-img');
+      } else {
+        lightboxImg.classList.remove('half-size-img');
+      }
     }
   </script>
 </body>

@@ -4,14 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>dmng92</title>
-  <link href="https://fonts.googleapis.com/css2?family=Favorit&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600&display=swap" rel="stylesheet">
   <style>
     html {
       scroll-behavior: smooth;
     }
     body {
       margin: 0;
-      font-family: 'Favorit', sans-serif;
+      font-family: 'Manrope', sans-serif;
       background-color: #1c1c1c;
       color: #ccc;
     }
@@ -19,7 +19,7 @@
       text-align: center;
       color: #ffcc00;
       margin: 20px 0;
-      font-size: 3em;
+      font-size: 6em;
     }
 
     @media (max-width: 600px) {
@@ -42,7 +42,7 @@
       margin-bottom: 10px;
       border-radius: 0px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      transition: transform 0.3s, box-shadow 0.3s;
+      transition: all 0.4s ease-in-out, box-shadow 0.3s;
       cursor: pointer;
     }
     .grid img:hover {
@@ -76,6 +76,14 @@
       border-radius: 0px;
     }
     .lightbox.show {
+      cursor: default;
+    }
+
+    .lightbox.show:hover .nav-arrow {
+      opacity: 1;
+    }
+
+    .lightbox.show {
       visibility: visible;
       opacity: 1;
     }
@@ -95,7 +103,28 @@
     .pagination button:hover {
       background-color: #555;
     }
-  </style>
+      .nav-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      border: none;
+      font-size: 2em;
+      padding: 10px 15px;
+      cursor: pointer;
+      z-index: 1000;
+      border-radius: 4px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    #prev-btn {
+      left: 20px;
+    }
+    #next-btn {
+      right: 20px;
+    }
+</style>
 </head>
 <body>
   <h1>thisisaformicatable</h1>
@@ -104,14 +133,13 @@
   <div class="lightbox" id="lightbox">
     <img src="" alt="Imagen ampliada" id="lightbox-img">
   </div>
-
+  <div class="pagination">$1
+      <button class="nav-arrow" id="prev-btn" onclick="navegarLightbox(-1)">←</button>
+    <button class="nav-arrow" id="next-btn" onclick="navegarLightbox(1)">→</button>
+  </div>
   <footer>
-    <div class="pagination">
-      <button onclick="cambiarPagina(-1)">«</button>
-      
-      <button onclick="cambiarPagina(1)">»</button>
-    </div>
-    </footer>
+    © whatyearisthis
+  </footer>
 
   <script src="imagenes.js"></script>
   <script>
@@ -121,18 +149,22 @@
     const paginaNumero = document.getElementById('pagina-numero');
     const porPagina = 12;
     let paginaActual = 1;
+let imagenesPagina = [];
+let imagenActualIndex = 0;
 
     function renderGaleria() {
       galeria.innerHTML = '';
       const inicio = (paginaActual - 1) * porPagina;
       const fin = inicio + porPagina;
-      const pagina = imagenes.slice(inicio, fin);
+      const imagenesPagina = imagenes.slice(inicio, fin);
+      const pagina
 
       pagina.forEach(nombre => {
         const img = document.createElement('img');
         img.src = `imagenes/${nombre}`;
+        img.loading = 'lazy';
         img.alt = nombre;
-        img.addEventListener('click', () => mostrarLightbox(img.src));
+        img.addEventListener('click', () => mostrarLightbox(img.src, index));
         galeria.appendChild(img);
       });
 
@@ -146,14 +178,29 @@
       renderGaleria();
     }
 
-    function mostrarLightbox(src) {
+    function mostrarLightbox(src, index) {
       lightboxImg.src = src;
+      imagenActualIndex = index;
       lightbox.classList.add('show');
     }
 
     lightbox.addEventListener('click', () => {
       lightbox.classList.remove('show');
     });
+
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('show')) return;
+      if (e.key === 'ArrowRight') navegarLightbox(1);
+      if (e.key === 'ArrowLeft') navegarLightbox(-1);
+      if (e.key === 'Escape') lightbox.classList.remove('show');
+    });
+
+    function navegarLightbox(direccion) {
+      imagenActualIndex += direccion;
+      if (imagenActualIndex < 0) imagenActualIndex = 0;
+      if (imagenActualIndex >= imagenesPagina.length) imagenActualIndex = imagenesPagina.length - 1;
+      lightboxImg.src = `imagenes/${imagenesPagina[imagenActualIndex]}`;
+    }
 
     renderGaleria();
   </script>

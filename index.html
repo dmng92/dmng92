@@ -107,29 +107,6 @@
       visibility: visible;
       opacity: 1;
     }
-    .pagination {
-      text-align: center;
-      margin-bottom: 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-    }
-    .pagination button {
-      background-color: #333;
-      color: #ccc;
-      border: none;
-      padding: 10px 15px;
-      cursor: pointer;
-      border-radius: 5px;
-    }
-    .pagination button:hover {
-      background-color: #555;
-    }
-    .pagination span {
-      font-size: 1em;
-      color: #aaa;
-    }
     .nav-arrow {
       position: absolute;
       top: 0;
@@ -148,7 +125,7 @@
 </head>
 <body>
   <h1><a href="https://dmng92.github.io/dmng92/">thisisaformicatable</a></h1>
-  
+
   <div class="grid" id="galeria">
     <div class="grid-sizer"></div>
   </div>
@@ -158,13 +135,7 @@
     <img src="" alt="Imagen ampliada" id="lightbox-img">
     <div class="nav-arrow nav-right" onclick="navegarLightbox(1)"></div>
   </div>
-  <div class="pagination">
-    <button onclick="cambiarPagina(-1)">←</button>
-    <span id="contador-pagina">Página 1 de 1</span>
-    <button onclick="cambiarPagina(1)">→</button>
-  </div>
-  <footer>
-  </footer>
+  <footer></footer>
 
   <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
   <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
@@ -173,51 +144,47 @@
     const galeria = document.getElementById('galeria');
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
-    const contadorPagina = document.getElementById('contador-pagina');
-    const porPagina = 12;
-    let paginaActual = 1;
-    let imagenesPagina = [];
+    const porCarga = 12;
+    let indexActual = 0;
     let imagenActualIndex = 0;
-
     let msnry;
 
-    function renderGaleria() {
-      galeria.innerHTML = '<div class="grid-sizer"></div>';
-      const totalPaginas = Math.ceil(imagenes.length / porPagina);
-      const inicio = (paginaActual - 1) * porPagina;
-      const fin = inicio + porPagina;
-      imagenesPagina = imagenes.slice(inicio, fin);
-
-      imagenesPagina.forEach((nombre, index) => {
+    function cargarImagenes() {
+      const fragment = document.createDocumentFragment();
+      const fin = Math.min(indexActual + porCarga, imagenes.length);
+      for (let i = indexActual; i < fin; i++) {
         const div = document.createElement('div');
         div.className = 'grid-item';
         const img = document.createElement('img');
-        img.src = `imagenes/${nombre}`;
+        img.src = `imagenes/${imagenes[i]}`;
         img.loading = 'lazy';
-        img.alt = nombre;
-        img.addEventListener('click', () => mostrarLightbox(img.src, index));
+        img.alt = imagenes[i];
+        img.addEventListener('click', () => mostrarLightbox(img.src, i));
         div.appendChild(img);
-        galeria.appendChild(div);
-      });
+        fragment.appendChild(div);
+      }
+      galeria.appendChild(fragment);
 
       imagesLoaded(galeria, function () {
-        msnry = new Masonry(galeria, {
-          itemSelector: '.grid-item',
-          columnWidth: '.grid-sizer',
-          percentPosition: true
-        });
+        if (!msnry) {
+          msnry = new Masonry(galeria, {
+            itemSelector: '.grid-item',
+            columnWidth: '.grid-sizer',
+            percentPosition: true
+          });
+        } else {
+          msnry.appended(Array.from(fragment.children));
+        }
       });
 
-      contadorPagina.textContent = `Página ${paginaActual} de ${totalPaginas}`;
+      indexActual = fin;
     }
 
-    function cambiarPagina(direccion) {
-      const totalPaginas = Math.ceil(imagenes.length / porPagina);
-      paginaActual += direccion;
-      if (paginaActual < 1) paginaActual = 1;
-      if (paginaActual > totalPaginas) paginaActual = totalPaginas;
-      renderGaleria();
-    }
+    window.addEventListener('scroll', () => {
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
+        cargarImagenes();
+      }
+    });
 
     function mostrarLightbox(src, index) {
       lightboxImg.src = src;
@@ -241,11 +208,11 @@
     function navegarLightbox(direccion) {
       imagenActualIndex += direccion;
       if (imagenActualIndex < 0) imagenActualIndex = 0;
-      if (imagenActualIndex >= imagenesPagina.length) imagenActualIndex = imagenesPagina.length - 1;
-      lightboxImg.src = `imagenes/${imagenesPagina[imagenActualIndex]}`;
+      if (imagenActualIndex >= imagenes.length) imagenActualIndex = imagenes.length - 1;
+      lightboxImg.src = `imagenes/${imagenes[imagenActualIndex]}`;
     }
 
-    renderGaleria();
+    cargarImagenes();
   </script>
 </body>
 </html>

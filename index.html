@@ -42,24 +42,27 @@
       }
     }
     .grid {
-      column-count: 3;
-      column-gap: 10px;
       max-width: 1200px;
       margin: 0px auto 0;
-      padding: 10px;
     }
-    .grid img {
+    .grid-sizer,
+    .grid-item {
+      width: 33.33%;
+    }
+    .grid-item {
+      margin-bottom: 10px;
+    }
+    .grid-item img {
       width: 100%;
       height: auto;
       max-width: 2000px;
-      display: inline-block;
-      margin-bottom: 10px;
+      display: block;
       border-radius: 0px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.2);
       transition: transform 0.3s, box-shadow 0.3s;
       cursor: pointer;
     }
-    .grid img:hover {
+    .grid-item img:hover {
       transform: scale(1.04);
       box-shadow: 0 6px 16px rgba(0,0,0,0.4);
     }
@@ -107,18 +110,25 @@
     .pagination {
       text-align: center;
       margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
     }
     .pagination button {
       background-color: #333;
       color: #ccc;
       border: none;
       padding: 10px 15px;
-      margin: 0 5px;
       cursor: pointer;
       border-radius: 5px;
     }
     .pagination button:hover {
       background-color: #555;
+    }
+    .pagination span {
+      font-size: 1em;
+      color: #aaa;
     }
     .nav-arrow {
       position: absolute;
@@ -139,7 +149,9 @@
 <body>
   <h1><a href="https://dmng92.github.io/dmng92/">thisisaformicatable</a></h1>
   
-  <div class="grid" id="galeria"></div>
+  <div class="grid" id="galeria">
+    <div class="grid-sizer"></div>
+  </div>
 
   <div class="lightbox" id="lightbox">
     <div class="nav-arrow nav-left" onclick="navegarLightbox(-1)"></div>
@@ -147,36 +159,56 @@
     <div class="nav-arrow nav-right" onclick="navegarLightbox(1)"></div>
   </div>
   <div class="pagination">
-    <button onclick="cambiarPagina(-1)">○</button>
-    <button onclick="cambiarPagina(1)">●</button>
+    <button onclick="cambiarPagina(-1)">←</button>
+    <span id="contador-pagina">Página 1 de 1</span>
+    <button onclick="cambiarPagina(1)">→</button>
   </div>
   <footer>
   </footer>
 
+  <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+  <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
   <script src="imagenes.js"></script>
   <script>
     const galeria = document.getElementById('galeria');
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
+    const contadorPagina = document.getElementById('contador-pagina');
     const porPagina = 12;
     let paginaActual = 1;
     let imagenesPagina = [];
     let imagenActualIndex = 0;
 
+    let msnry;
+
     function renderGaleria() {
-      galeria.innerHTML = '';
+      galeria.innerHTML = '<div class="grid-sizer"></div>';
+      const totalPaginas = Math.ceil(imagenes.length / porPagina);
       const inicio = (paginaActual - 1) * porPagina;
       const fin = inicio + porPagina;
       imagenesPagina = imagenes.slice(inicio, fin);
 
       imagenesPagina.forEach((nombre, index) => {
+        const div = document.createElement('div');
+        div.className = 'grid-item';
         const img = document.createElement('img');
         img.src = `imagenes/${nombre}`;
         img.loading = 'lazy';
         img.alt = nombre;
         img.addEventListener('click', () => mostrarLightbox(img.src, index));
-        galeria.appendChild(img);
+        div.appendChild(img);
+        galeria.appendChild(div);
       });
+
+      imagesLoaded(galeria, function () {
+        msnry = new Masonry(galeria, {
+          itemSelector: '.grid-item',
+          columnWidth: '.grid-sizer',
+          percentPosition: true
+        });
+      });
+
+      contadorPagina.textContent = `Página ${paginaActual} de ${totalPaginas}`;
     }
 
     function cambiarPagina(direccion) {

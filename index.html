@@ -57,7 +57,6 @@
       height: 100vh;
       background: rgba(0,0,0,0.9);
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
       visibility: hidden;
@@ -74,28 +73,31 @@
       visibility: visible;
       opacity: 1;
     }
-    .zoom-buttons {
-      margin: 10px;
+    .pagination {
+      text-align: center;
+      margin-bottom: 20px;
     }
-    .zoom-buttons button {
+    .pagination button {
       background-color: #333;
       color: #ccc;
       border: none;
-      padding: 10px 20px;
+      padding: 10px 15px;
       margin: 0 5px;
       cursor: pointer;
       border-radius: 5px;
     }
-    .zoom-buttons button:hover {
+    .pagination button:hover {
       background-color: #555;
-    }
-    .half-size-img {
-      transform: scale(0.5);
     }
   </style>
 </head>
 <body>
   <h1>thisisaformicatable</h1>
+  <div class="pagination">
+    <button onclick="cambiarPagina(-1)">Anterior</button>
+    <span id="pagina-numero">1</span>
+    <button onclick="cambiarPagina(1)">Siguiente</button>
+  </div>
   <div class="grid" id="galeria"></div>
 
   <div class="lightbox" id="lightbox">
@@ -103,7 +105,7 @@
   </div>
 
   <footer>
-    © 2024 thisisaformicatable
+    © whatyearisthis
   </footer>
 
   <script src="imagenes.js"></script>
@@ -111,34 +113,45 @@
     const galeria = document.getElementById('galeria');
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
+    const paginaNumero = document.getElementById('pagina-numero');
+    const porPagina = 12;
+    let paginaActual = 1;
 
-    imagenes.forEach(nombre => {
-      const img = document.createElement('img');
-      img.src = `imagenes/${nombre}`;
-      img.alt = nombre;
-      img.addEventListener('click', () => mostrarLightbox(img.src));
-      galeria.appendChild(img);
-    });
+    function renderGaleria() {
+      galeria.innerHTML = '';
+      const inicio = (paginaActual - 1) * porPagina;
+      const fin = inicio + porPagina;
+      const pagina = imagenes.slice(inicio, fin);
+
+      pagina.forEach(nombre => {
+        const img = document.createElement('img');
+        img.src = `imagenes/${nombre}`;
+        img.alt = nombre;
+        img.addEventListener('click', () => mostrarLightbox(img.src));
+        galeria.appendChild(img);
+      });
+
+      paginaNumero.textContent = paginaActual;
+    }
+
+    function cambiarPagina(direccion) {
+      const totalPaginas = Math.ceil(imagenes.length / porPagina);
+      paginaActual += direccion;
+      if (paginaActual < 1) paginaActual = 1;
+      if (paginaActual > totalPaginas) paginaActual = totalPaginas;
+      renderGaleria();
+    }
 
     function mostrarLightbox(src) {
       lightboxImg.src = src;
-      lightboxImg.classList.remove('half-size-img');
       lightbox.classList.add('show');
     }
 
-    lightbox.addEventListener('click', (e) => {
-      if (!e.target.closest('.zoom-buttons')) {
-        lightbox.classList.remove('show');
-      }
+    lightbox.addEventListener('click', () => {
+      lightbox.classList.remove('show');
     });
 
-    function cambiarZoom(porcentaje) {
-      if (porcentaje === '50') {
-        lightboxImg.classList.add('half-size-img');
-      } else {
-        lightboxImg.classList.remove('half-size-img');
-      }
-    }
+    renderGaleria();
   </script>
 </body>
 </html>

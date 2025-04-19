@@ -43,13 +43,13 @@
     }
     .grid {
       max-width: 1200px;
-      margin: 0px auto 0;
+      margin: 0 auto;
     }
-    .grid-sizer,
-    .grid-item {
+    .grid-sizer {
       width: 33.33%;
     }
     .grid-item {
+      width: 33.33%;
       margin-bottom: 10px;
     }
     .grid-item img {
@@ -170,7 +170,9 @@
           msnry = new Masonry(galeria, {
             itemSelector: '.grid-item',
             columnWidth: '.grid-sizer',
-            percentPosition: true
+            percentPosition: true,
+            originLeft: true,
+            horizontalOrder: false
           });
         } else {
           msnry.appended(Array.from(fragment.children));

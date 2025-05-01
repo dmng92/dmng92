@@ -192,6 +192,7 @@
   <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
   <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
   <script src="imagenes.js"></script>
+ 
   <script>
     const galeria = document.getElementById('galeria');
     const lightbox = document.getElementById('lightbox');
@@ -237,6 +238,13 @@
     window.addEventListener('scroll', () => {
       if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
         cargarImagenes();
+  
+    // Cerrar lightbox al hacer clic fuera de la imagen
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) {
+        cerrarLightbox();
+      }
+    });
       }
     });
   
@@ -274,7 +282,7 @@
     }
   
     cargarImagenes();
-  </script>  
-  
+  </script>
+    
 </body>
 </html>

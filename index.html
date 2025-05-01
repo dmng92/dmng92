@@ -15,6 +15,10 @@
       background-color: #1c1c1c;
       color: #ccc;
     }
+    body.no-scroll {
+      overflow: hidden;
+      height: 100vh;
+    }
     h1 {
       position: top;
       top: 0;
@@ -37,23 +41,22 @@
       color: #ffcc00;
     }
     .subtitulo {
-  text-align: center;
-  font-size: 1em;
-  color: #999;
-  margin: 0px 0 0px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-}
+      text-align: center;
+      font-size: 1em;
+      color: #999;
+      margin: 0px 0 0px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+    }
 
-@media (max-width: 600px) {
-  h1 {
-    font-size: 2.5em;
-    padding: 16px;
-  }
-}
-
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2.5em;
+        padding: 16px;
+      }
+    }
     .grid {
       max-width: 1200px;
       margin: 0px auto 0;
@@ -167,7 +170,6 @@
 <body>
   <h1><a href="https://dmng92.github.io/dmng92/">thisisaformicatable</a></h1>
 
-
   <div class="grid" id="galeria">
     <div class="grid-sizer"></div>
   </div>
@@ -179,7 +181,7 @@
       <a id="lightbox-link" class="link-btn" href="#" target="_blank">
         <span>🔗</span> Fullsize
       </a>
-      <button class="close-btn-inline" onclick="lightbox.classList.remove('show')">&times;</button>
+      <button class="close-btn-inline" onclick="cerrarLightbox()">&times;</button>
     </div>
     <div class="nav-arrow nav-right" onclick="navegarLightbox(1)"></div>
   </div>
@@ -240,14 +242,20 @@
       lightboxLink.href = src;
       imagenActualIndex = index;
       lightbox.classList.add('show');
+      document.body.classList.add('no-scroll');
       window.scrollTo(0, 0);
+    }
+
+    function cerrarLightbox() {
+      lightbox.classList.remove('show');
+      document.body.classList.remove('no-scroll');
     }
 
     document.addEventListener('keydown', (e) => {
       if (!lightbox.classList.contains('show')) return;
       if (e.key === 'ArrowRight') navegarLightbox(1);
       if (e.key === 'ArrowLeft') navegarLightbox(-1);
-      if (e.key === 'Escape') lightbox.classList.remove('show');
+      if (e.key === 'Escape') cerrarLightbox();
     });
 
     function navegarLightbox(direccion) {

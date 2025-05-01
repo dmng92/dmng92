@@ -6,6 +6,22 @@
   <title>dmng92</title>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600&display=swap" rel="stylesheet">
   <style>
+    
+.lightbox img.fade-in {
+  animation: aparecer 0.4s ease-out;
+}
+
+@keyframes aparecer {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
 :root {
   --img-size: 33.333%;
 }
@@ -258,13 +274,17 @@
     });
       ;
   
-    function mostrarLightbox(src, index) {
-            lightboxImg.src = src;
-      lightboxLink.href = src;
-      imagenActualIndex = index;
-      lightbox.classList.add('show');
-      document.body.classList.add('no-scroll');
-          }
+      function mostrarLightbox(src, index) {
+  lightboxImg.classList.remove('fade-in'); // Reinicia animación si ya existe
+  void lightboxImg.offsetWidth; // Fuerza reflow para reiniciar animación
+  lightboxImg.src = src;
+  lightboxLink.href = src;
+  imagenActualIndex = index;
+  lightbox.classList.add('show');
+  lightboxImg.classList.add('fade-in'); // Agrega clase con animación
+  document.body.classList.add('no-scroll');
+}
+
   
     function cerrarLightbox() {
       lightbox.classList.remove('show');

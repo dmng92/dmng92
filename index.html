@@ -6,6 +6,9 @@
   <title>dmng92</title>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600&display=swap" rel="stylesheet">
   <style>
+:root {
+  --img-size: 33.333%;
+}
     html {
       scroll-behavior: smooth;
     }
@@ -66,7 +69,7 @@
 }
     .grid-sizer,
 .grid-item {
-  width: calc(100% - 10px);
+  width: calc(var(--img-size) - 10px);
   margin-bottom: 10px;
 }
     .grid-item {
@@ -173,6 +176,10 @@
 </head>
 <body>
   <h1><a href="https://dmng92.github.io/dmng92/">thisisaformicatable</a></h1>
+  <div style="text-align:center; margin: 10px;">
+    <label for="tamSlider" style="color: #ccc;">Tamaño de imagen: </label>
+    <input type="range" id="tamSlider" min="20" max="100" value="100" step="10">
+  </div>
 
   <div class="grid" id="galeria">
     <div class="grid-sizer"></div>
@@ -239,6 +246,12 @@
     window.addEventListener('scroll', () => {
       if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
         cargarImagenes();
+
+    document.getElementById('tamSlider').addEventListener('input', function () {
+      const porcentaje = this.value;
+      document.documentElement.style.setProperty('--img-size', `${porcentaje / 3}%`);
+      if (msnry) msnry.layout();
+    });
   
     // Cerrar lightbox al hacer clic fuera de la imagen
     lightbox.addEventListener('click', (e) => {

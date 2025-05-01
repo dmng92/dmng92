@@ -182,8 +182,6 @@
 <body>
   <h1><a href="https://dmng92.github.io/dmng92/">thisisaformicatable</a></h1>
   <div style="text-align:center; margin: 10px;">
-    <label for="tamSlider" style="color: #ccc;">Tamaño de imagen: </label>
-    <input type="range" id="tamSlider" min="20" max="100" value="100" step="10">
   </div>
 
   <div class="grid" id="galeria">
@@ -203,19 +201,6 @@
   </div>
   <footer></footer>
 
-  <script>
-    // Agregar el evento para el slider
-    document.getElementById('tamSlider').addEventListener('input', function () {
-      const porcentaje = this.value;
-      // Cambiar la propiedad CSS para actualizar el tamaño de la imagen
-      document.documentElement.style.setProperty('--img-size', `${porcentaje / 3}%`);
-      
-      // Asegurar que Masonry recalcule el diseño
-      if (msnry) {
-        msnry.layout();
-      }
-    });
-  </script>
   
   <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
   <script src="imagenes.js"></script>

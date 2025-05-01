@@ -65,13 +65,11 @@
       }
     }
     .grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  position: relative;
   margin: 0 auto;
-  max-width: 100%;
-  padding: 0;
+  max-width: 1200px;
 }
+
     .grid-sizer,
 .grid-item {
   width: calc(var(--img-size) );
@@ -202,6 +200,7 @@
 
 
   <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
+  <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
   <script src="imagenes.js"></script>
  
   <script>

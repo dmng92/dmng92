@@ -94,8 +94,13 @@
       max-height: 80vh;
       border-radius: 0px;
     }
-    .lightbox .link-btn {
+    .lightbox .controls {
       margin-top: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .lightbox .link-btn {
       background: none;
       border: 1px solid #888;
       color: #ccc;
@@ -112,18 +117,14 @@
       background: #333;
       color: #fff;
     }
-    .lightbox .close-btn {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      font-size: 24px;
+    .lightbox .close-btn-inline {
+      font-size: 20px;
       color: #aaa;
-      cursor: pointer;
-      z-index: 1001;
       background: none;
       border: none;
+      cursor: pointer;
     }
-    .lightbox .close-btn:hover {
+    .lightbox .close-btn-inline:hover {
       color: #fff;
     }
     .lightbox.show {
@@ -158,12 +159,14 @@
   </div>
 
   <div class="lightbox" id="lightbox">
-    <button class="close-btn" onclick="lightbox.classList.remove('show')">&times;</button>
     <div class="nav-arrow nav-left" onclick="navegarLightbox(-1)"></div>
     <img src="" alt="Imagen ampliada" id="lightbox-img">
-    <a id="lightbox-link" class="link-btn" href="#" target="_blank">
-      <span>🔗</span> Abrir imagen en otra pestaña
-    </a>
+    <div class="controls">
+      <a id="lightbox-link" class="link-btn" href="#" target="_blank">
+        <span>🔗</span> Abrir imagen en otra pestaña
+      </a>
+      <button class="close-btn-inline" onclick="lightbox.classList.remove('show')">&times;</button>
+    </div>
     <div class="nav-arrow nav-right" onclick="navegarLightbox(1)"></div>
   </div>
   <footer></footer>

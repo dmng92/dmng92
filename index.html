@@ -64,15 +64,26 @@
       color: #ffcc00;
     }
     .subtitulo {
-      text-align: center;
-      font-size: 1em;
-      color: #999;
-      margin: 0px 0 0px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 8px;
-    }
+  text-align: center;
+  font-size: 1em;
+  color: #999;
+  margin: 0px 0 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.subtitulo a {
+  color: #ffcc00;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.subtitulo a:hover {
+  text-decoration: underline;
+}
+
 
     @media (max-width: 600px) {
       h1 {
@@ -195,7 +206,11 @@
 </head>
 <body>
   <h1><a href="https://dmng92.github.io/dmng92/">thisisaformicatable</a></h1>
-
+  <div class="subtitulo">
+    <span>Sígueme en</span>
+    <a href="https://instagram.com/_nicoantico" target="_blank" rel="noopener noreferrer">@_nicoantico</a>
+  </div>
+  
 
   <div class="grid" id="galeria">
     <div class="grid-sizer"></div>

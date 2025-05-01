@@ -254,6 +254,7 @@
       lightbox.classList.remove('show');
       document.body.classList.remove('no-scroll');
       document.body.style.top = '';
+      window.scrollTo({ top: scrollPos, behavior: 'auto' }); // Restaura scroll
     }
   
     document.addEventListener('keydown', (e) => {
@@ -273,7 +274,7 @@
     }
   
     cargarImagenes();
-  </script>
+  </script>  
   
 </body>
 </html>

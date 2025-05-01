@@ -192,6 +192,7 @@
   <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
   <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
   <script src="imagenes.js"></script>
+  // ... (rest of your unchanged HTML head)
   <script>
     const galeria = document.getElementById('galeria');
     const lightbox = document.getElementById('lightbox');
@@ -201,7 +202,8 @@
     let indexActual = 0;
     let imagenActualIndex = 0;
     let msnry;
-
+    let scrollPos = 0; // <-- Nueva variable para guardar el scroll
+  
     function cargarImagenes() {
       const fragment = document.createDocumentFragment();
       const fin = Math.min(indexActual + porCarga, imagenes.length);
@@ -217,7 +219,7 @@
         fragment.appendChild(div);
       }
       galeria.appendChild(fragment);
-
+  
       imagesLoaded(galeria, function () {
         if (!msnry) {
           msnry = new Masonry(galeria, {
@@ -229,36 +231,40 @@
           msnry.appended(Array.from(fragment.children));
         }
       });
-
+  
       indexActual = fin;
     }
-
+  
     window.addEventListener('scroll', () => {
       if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
         cargarImagenes();
       }
     });
-
+  
     function mostrarLightbox(src, index) {
+      scrollPos = window.scrollY; // Guarda la posición actual del scroll
       lightboxImg.src = src;
       lightboxLink.href = src;
       imagenActualIndex = index;
       lightbox.classList.add('show');
       document.body.classList.add('no-scroll');
+      document.body.style.top = `-${scrollPos}px`; // Corrige la posición
     }
-
+  
     function cerrarLightbox() {
       lightbox.classList.remove('show');
       document.body.classList.remove('no-scroll');
+      document.body.style.top = '';
+      window.scrollTo(0, scrollPos); // Restaura scroll
     }
-
+  
     document.addEventListener('keydown', (e) => {
       if (!lightbox.classList.contains('show')) return;
       if (e.key === 'ArrowRight') navegarLightbox(1);
       if (e.key === 'ArrowLeft') navegarLightbox(-1);
       if (e.key === 'Escape') cerrarLightbox();
     });
-
+  
     function navegarLightbox(direccion) {
       imagenActualIndex += direccion;
       if (imagenActualIndex < 0) imagenActualIndex = 0;
@@ -267,8 +273,9 @@
       lightboxImg.src = nuevaSrc;
       lightboxLink.href = nuevaSrc;
     }
-
+  
     cargarImagenes();
   </script>
+  
 </body>
 </html>

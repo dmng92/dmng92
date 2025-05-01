@@ -224,7 +224,7 @@
         const div = document.createElement('div');
         div.className = 'grid-item';
         const img = document.createElement('img');
-        img.src = `imagenes/${imagenes[i]}`;
+        img.src = imagenes/${imagenes[i]};
         img.loading = 'lazy';
         img.alt = imagenes[i];
         img.addEventListener('click', () => mostrarLightbox(img.src, i));
@@ -254,7 +254,7 @@
 
     document.getElementById('tamSlider').addEventListener('input', function () {
       const porcentaje = this.value;
-      document.documentElement.style.setProperty('--img-size', `${porcentaje / 3}%`);
+      document.documentElement.style.setProperty('--img-size', ${porcentaje / 3}%);
       if (msnry) msnry.layout();
     });
   
@@ -293,7 +293,7 @@
       imagenActualIndex += direccion;
       if (imagenActualIndex < 0) imagenActualIndex = 0;
       if (imagenActualIndex >= imagenes.length) imagenActualIndex = imagenes.length - 1;
-      const nuevaSrc = `imagenes/${imagenes[imagenActualIndex]}`;
+      const nuevaSrc = imagenes/${imagenes[imagenActualIndex]};
       lightboxImg.src = nuevaSrc;
       lightboxLink.href = nuevaSrc;
     }

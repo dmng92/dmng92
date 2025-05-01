@@ -275,27 +275,21 @@
       ;
   
       function mostrarLightbox(src, index) {
-  lightboxImg.classList.remove('fade-in');
-  void lightboxImg.offsetWidth;
+  lightboxImg.classList.remove('fade-in'); // Reinicia animación si ya existe
+  void lightboxImg.offsetWidth; // Fuerza reflow para reiniciar animación
   lightboxImg.src = src;
   lightboxLink.href = src;
   imagenActualIndex = index;
   lightbox.classList.add('show');
-  lightboxImg.classList.add('fade-in');
+  lightboxImg.classList.add('fade-in'); // Agrega clase con animación
   document.body.classList.add('no-scroll');
 }
 
-function cerrarLightbox() {
-  lightboxImg.classList.remove('fade-in'); // quita la clase antes de ocultar
-  lightbox.classList.remove('show');
-  lightbox.addEventListener('transitionend', ocultarLightbox, { once: true });
-  document.body.classList.remove('no-scroll');
-}
-
-function ocultarLightbox() {
-  lightboxImg.src = ""; // Opcional: limpia la imagen
-}
-
+  
+    function cerrarLightbox() {
+      lightbox.classList.remove('show');
+      document.body.classList.remove('no-scroll');
+                }
   
     document.addEventListener('keydown', (e) => {
       if (!lightbox.classList.contains('show')) return;

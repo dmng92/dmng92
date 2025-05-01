@@ -126,7 +126,7 @@
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      visibility: hidden;
+      pointer-events: none;
       opacity: 0;
       transition: opacity 0.3s ease;
       z-index: 999;
@@ -275,21 +275,27 @@
       ;
   
       function mostrarLightbox(src, index) {
-  lightboxImg.classList.remove('fade-in'); // Reinicia animación si ya existe
-  void lightboxImg.offsetWidth; // Fuerza reflow para reiniciar animación
+  lightboxImg.classList.remove('fade-in');
+  void lightboxImg.offsetWidth;
   lightboxImg.src = src;
   lightboxLink.href = src;
   imagenActualIndex = index;
   lightbox.classList.add('show');
-  lightboxImg.classList.add('fade-in'); // Agrega clase con animación
+  lightboxImg.classList.add('fade-in');
   document.body.classList.add('no-scroll');
 }
 
-  
-    function cerrarLightbox() {
-      lightbox.classList.remove('show');
-      document.body.classList.remove('no-scroll');
-                }
+function cerrarLightbox() {
+  lightboxImg.classList.remove('fade-in'); // quita la clase antes de ocultar
+  lightbox.classList.remove('show');
+  lightbox.addEventListener('transitionend', ocultarLightbox, { once: true });
+  document.body.classList.remove('no-scroll');
+}
+
+function ocultarLightbox() {
+  lightboxImg.src = ""; // Opcional: limpia la imagen
+}
+
   
     document.addEventListener('keydown', (e) => {
       if (!lightbox.classList.contains('show')) return;

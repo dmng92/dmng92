@@ -203,18 +203,20 @@
   </div>
   <footer></footer>
 
-  <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js">document.getElementById('tamSlider').addEventListener('input', function () {
-  const porcentaje = this.value;
-  document.documentElement.style.setProperty('--img-size', `${porcentaje / 3}%`);
-  if (msnry) msnry.layout();
-});
-
-lightbox.addEventListener('click', (e) => {
-  if (e.target === lightbox) {
-    cerrarLightbox();
-  }
-});
-</script>
+  <script>
+    // Agregar el evento para el slider
+    document.getElementById('tamSlider').addEventListener('input', function () {
+      const porcentaje = this.value;
+      // Cambiar la propiedad CSS para actualizar el tamaño de la imagen
+      document.documentElement.style.setProperty('--img-size', `${porcentaje / 3}%`);
+      
+      // Asegurar que Masonry recalcule el diseño
+      if (msnry) {
+        msnry.layout();
+      }
+    });
+  </script>
+  
   <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
   <script src="imagenes.js"></script>
  

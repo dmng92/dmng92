@@ -103,20 +103,35 @@
       border-radius: 4px;
       text-decoration: none;
       font-size: 0.9em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
       transition: background 0.2s, color 0.2s;
     }
     .lightbox .link-btn:hover {
       background: #333;
       color: #fff;
     }
+    .lightbox .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 24px;
+      color: #aaa;
+      cursor: pointer;
+      z-index: 1001;
+      background: none;
+      border: none;
+    }
+    .lightbox .close-btn:hover {
+      color: #fff;
+    }
     .lightbox.show {
       cursor: default;
-    }
-    .lightbox.show:hover .nav-arrow {
+      visibility: visible;
       opacity: 1;
     }
-    .lightbox.show {
-      visibility: visible;
+    .lightbox.show:hover .nav-arrow {
       opacity: 1;
     }
     .nav-arrow {
@@ -143,9 +158,12 @@
   </div>
 
   <div class="lightbox" id="lightbox">
+    <button class="close-btn" onclick="lightbox.classList.remove('show')">&times;</button>
     <div class="nav-arrow nav-left" onclick="navegarLightbox(-1)"></div>
     <img src="" alt="Imagen ampliada" id="lightbox-img">
-    <a id="lightbox-link" class="link-btn" href="#" target="_blank">Abrir imagen en otra pestaña</a>
+    <a id="lightbox-link" class="link-btn" href="#" target="_blank">
+      <span>🔗</span> Abrir imagen en otra pestaña
+    </a>
     <div class="nav-arrow nav-right" onclick="navegarLightbox(1)"></div>
   </div>
   <footer></footer>
@@ -206,12 +224,6 @@
       imagenActualIndex = index;
       lightbox.classList.add('show');
     }
-
-    lightbox.addEventListener('click', (e) => {
-      if (e.target === lightbox) {
-        lightbox.classList.remove('show');
-      }
-    });
 
     document.addEventListener('keydown', (e) => {
       if (!lightbox.classList.contains('show')) return;

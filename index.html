@@ -62,10 +62,6 @@
       transition: transform 0.3s, box-shadow 0.3s;
       cursor: pointer;
     }
-    .grid-item img:hover {
-      transform: scale(1.04);
-      box-shadow: 0 6px 16px rgba(0,0,0,0.4);
-    }
     footer {
       text-align: center;
       padding: 20px;
@@ -87,6 +83,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      flex-direction: column;
       visibility: hidden;
       opacity: 0;
       transition: opacity 0.3s ease;
@@ -96,6 +93,21 @@
       max-width: 90%;
       max-height: 80vh;
       border-radius: 0px;
+    }
+    .lightbox .link-btn {
+      margin-top: 20px;
+      background: none;
+      border: 1px solid #888;
+      color: #ccc;
+      padding: 8px 16px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-size: 0.9em;
+      transition: background 0.2s, color 0.2s;
+    }
+    .lightbox .link-btn:hover {
+      background: #333;
+      color: #fff;
     }
     .lightbox.show {
       cursor: default;
@@ -133,6 +145,7 @@
   <div class="lightbox" id="lightbox">
     <div class="nav-arrow nav-left" onclick="navegarLightbox(-1)"></div>
     <img src="" alt="Imagen ampliada" id="lightbox-img">
+    <a id="lightbox-link" class="link-btn" href="#" target="_blank">Abrir imagen en otra pestaña</a>
     <div class="nav-arrow nav-right" onclick="navegarLightbox(1)"></div>
   </div>
   <footer></footer>
@@ -144,6 +157,7 @@
     const galeria = document.getElementById('galeria');
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
+    const lightboxLink = document.getElementById('lightbox-link');
     const porCarga = 120;
     let indexActual = 0;
     let imagenActualIndex = 0;
@@ -188,6 +202,7 @@
 
     function mostrarLightbox(src, index) {
       lightboxImg.src = src;
+      lightboxLink.href = src;
       imagenActualIndex = index;
       lightbox.classList.add('show');
     }
@@ -209,7 +224,9 @@
       imagenActualIndex += direccion;
       if (imagenActualIndex < 0) imagenActualIndex = 0;
       if (imagenActualIndex >= imagenes.length) imagenActualIndex = imagenes.length - 1;
-      lightboxImg.src = `imagenes/${imagenes[imagenActualIndex]}`;
+      const nuevaSrc = `imagenes/${imagenes[imagenActualIndex]}`;
+      lightboxImg.src = nuevaSrc;
+      lightboxLink.href = nuevaSrc;
     }
 
     cargarImagenes();

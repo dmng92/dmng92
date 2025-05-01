@@ -16,11 +16,8 @@
       color: #ccc;
     }
     body.no-scroll {
-      overflow: hidden;
-      height: 100vh;
-      position: fixed;
-      width: 100%;
-    }
+  overflow: hidden;
+}
     h1 {
       position: top;
       top: 0;
@@ -202,8 +199,7 @@
     let indexActual = 0;
     let imagenActualIndex = 0;
     let msnry;
-    let scrollPos = 0; // <-- Nueva variable para guardar el scroll
-  
+      
     function cargarImagenes() {
       const fragment = document.createDocumentFragment();
       const fin = Math.min(indexActual + porCarga, imagenes.length);
@@ -255,15 +251,13 @@
       imagenActualIndex = index;
       lightbox.classList.add('show');
       document.body.classList.add('no-scroll');
-      document.body.style.top = `-${scrollPos}px`; // Corrige la posición
-    }
+          }
   
     function cerrarLightbox() {
       lightbox.classList.remove('show');
       document.body.classList.remove('no-scroll');
       document.body.style.top = '';
-      window.scrollTo({ top: scrollPos, behavior: 'auto' }); // Restaura scroll
-    }
+          }
   
     document.addEventListener('keydown', (e) => {
       if (!lightbox.classList.contains('show')) return;

@@ -418,6 +418,8 @@
 document.getElementById('flechaDerecha').addEventListener('click', () => {
   if ((paginaActual + 1) * porPagina < imagenes.length) {
     mostrarPagina(paginaActual + 1);
+  } else {
+    mostrarPagina(0);
   }
 });
 

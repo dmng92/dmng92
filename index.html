@@ -408,8 +408,12 @@
     document.getElementById('flechaIzquierda').addEventListener('click', () => {
   if (paginaActual > 0) {
     mostrarPagina(paginaActual - 1);
+  } else {
+    const ultimaPagina = Math.floor((imagenes.length - 1) / porPagina);
+    mostrarPagina(ultimaPagina);
   }
 });
+
 
 document.getElementById('flechaDerecha').addEventListener('click', () => {
   if ((paginaActual + 1) * porPagina < imagenes.length) {
@@ -417,17 +421,6 @@ document.getElementById('flechaDerecha').addEventListener('click', () => {
   }
 });
 
-document.getElementById('flechaIzquierda').addEventListener('click', () => {
-  if (paginaActual > 0) {
-    mostrarPagina(paginaActual - 1);
-  }
-});
-
-document.getElementById('flechaDerecha').addEventListener('click', () => {
-  if ((paginaActual + 1) * porPagina < imagenes.length) {
-    mostrarPagina(paginaActual + 1);
-  }
-});
 
 function actualizarFlechas() {
   const scrollY = window.scrollY;

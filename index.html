@@ -6,55 +6,27 @@
   <title>dmng92</title>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    
-.lightbox img.fade-in {
-  animation: aparecer 0.4s ease-out;
-}
-
-@keyframes aparecer {
-  from {
-    transform: scale(0.95);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-:root {
-  --img-size: 33.333%;
-}
-    html {
-  scroll-behavior: smooth;
-  padding: 0;
-  margin: 0;
-  overflow-x: hidden;
-}
-    body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Manrope', sans-serif;
-  background-color: #1c1c1c;
-  color: #ccc;
-  overflow-x: hidden;
-}
-    body.no-scroll {
-  overflow: hidden;
-}
+    :root {
+      --img-size: 33.333%;
+      --imgs-por-pagina: 16;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Manrope', sans-serif;
+      background-color: #1c1c1c;
+      color: #ccc;
+      overflow-x: hidden;
+    }
     h1 {
-      position: top;
-      top: 0;
-      width: 100%;
+      margin-top: 10px;
       text-align: center;
       background: rgba(28,28,28,0.95);
-      margin: 10px 0 0 0; /* Agrega 10px de margen en la parte superior */
-      padding: 0px;
+      padding: 10px;
       font-size: 8em;
       color: #ffcc00;
-      z-index: 100;
-      transition: all 0.4s ease-in-out, opacity 0.3s;
       opacity: 0.7;
+      transition: all 0.4s ease-in-out, opacity 0.3s;
     }
     h1:hover {
       opacity: 1;
@@ -64,67 +36,49 @@
       color: #ffcc00;
     }
     .subtitulo {
-  text-align: center;
-  font-size: 1em;
-  color: #999;
-  margin: -5px 0 7px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-}
-
-.subtitulo a {
-  color: #ffcc00;
-  text-decoration: none;
-  font-weight: 600;
-}
-
-.subtitulo a:hover {
-  text-decoration: underline;
-}
-
-
+      text-align: center;
+      font-size: 1em;
+      color: #999;
+      margin: 0;
+    }
+    .subtitulo a {
+      color: #999;
+      text-decoration: underline;
+    }
     @media (max-width: 600px) {
       h1 {
-        font-size: 2em;
-        padding: 0px;
+        font-size: 2.5em;
       }
     }
-    .grid {
-  position: relative;
-  margin: 0 auto;
-  max-width: 1200px;
-}
 
-    .grid-sizer,
-.grid-item {
-  width: calc(var(--img-size) );
-  margin-bottom: 10px;
-}
+    .carrusel {
+      display: flex;
+      overflow-x: hidden;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      width: 100vw;
+    }
+    .pagina {
+      flex: 0 0 100%;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      scroll-snap-align: start;
+      padding: 10px;
+    }
     .grid-item {
-      margin-bottom: 0px;
+      width: calc(var(--img-size) - 10px);
+      margin-bottom: 10px;
     }
     .grid-item img {
-  width: 100%;
-  height: auto;
-  max-width: 2000px;
-  display: block;
-  border-radius: 0px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-  transition: transform 0.3s, box-shadow 0.3s;
-  cursor: pointer;
-}
-    footer {
-      text-align: center;
-      padding: 20px;
-      color: #666;
-      font-size: 0.9em;
-    }
-    .footer-icon {
-      vertical-align: middle;
-      margin-right: 5px;
-      width: 20px;
+      width: 100%;
+      height: auto;
+      max-width: 2000px;
+      display: block;
+      border-radius: 0px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
     }
     .lightbox {
       position: fixed;
@@ -139,191 +93,123 @@
       flex-direction: column;
       visibility: hidden;
       opacity: 0;
-      transition: opacity 0.3s ease;
+      transition: opacity 0.5s ease;
       z-index: 999;
     }
     .lightbox img {
       max-width: 90%;
       max-height: 80vh;
-      border-radius: 0px;
     }
     .lightbox .controls {
       margin-top: 20px;
       display: flex;
-      align-items: center;
       gap: 12px;
     }
-    .lightbox .link-btn {
-      background: none;
+    .link-btn {
       border: 1px solid #888;
       color: #ccc;
+      background: none;
       padding: 8px 16px;
       border-radius: 4px;
       text-decoration: none;
-      font-size: 0.9em;
-      display: flex;
-      align-items: center;
-      gap: 6px;
       transition: background 0.2s, color 0.2s;
     }
-    .lightbox .link-btn:hover {
+    .link-btn:hover {
       background: #333;
       color: #fff;
     }
-    .lightbox .close-btn-inline {
+    .close-btn-inline {
       font-size: 20px;
       color: #aaa;
       background: none;
       border: none;
       cursor: pointer;
     }
-    .lightbox .close-btn-inline:hover {
+    .close-btn-inline:hover {
       color: #fff;
     }
     .lightbox.show {
-      cursor: default;
       visibility: visible;
       opacity: 1;
     }
-    .lightbox.show:hover .nav-arrow {
-      opacity: 1;
-    }
-    .nav-arrow {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      width: 33%;
-      cursor: pointer;
-      z-index: 1000;
-    }
-    .nav-left {
-      left: 0;
-    }
-    .nav-right {
-      right: 0;
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #666;
+      font-size: 0.9em;
     }
   </style>
 </head>
 <body>
   <h1><a href="https://dmng92.github.io/dmng92/">thisisaformicatable</a></h1>
   <div class="subtitulo">
-    <span>ig</span>
-    <a href="https://instagram.com/_nicoantico" target="_blank" rel="noopener noreferrer">@_nicoantico</a>
+    <a href="https://instagram.com/tu_usuario" target="_blank">@tu_usuario</a>
   </div>
-  
 
-  <div class="grid" id="galeria">
-    <div class="grid-sizer"></div>
-  </div>
+  <div class="carrusel" id="carrusel"></div>
 
   <div class="lightbox" id="lightbox">
-    <div class="nav-arrow nav-left" onclick="navegarLightbox(-1)"></div>
     <img src="" alt="Imagen ampliada" id="lightbox-img">
     <div class="controls">
-      <a id="lightbox-link" class="link-btn" href="#" target="_blank">
-        <span>🔗</span> Fullsize
-      </a>
+      <a id="lightbox-link" class="link-btn" href="#" target="_blank">🔗 Fullsize</a>
       <button class="close-btn-inline" onclick="cerrarLightbox()">&times;</button>
     </div>
-    <div class="nav-arrow nav-right" onclick="navegarLightbox(1)"></div>
   </div>
   <footer></footer>
 
-
-  <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
-  <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
   <script src="imagenes.js"></script>
- 
   <script>
-    const galeria = document.getElementById('galeria');
+    const imagenesPorPagina = 16;
+    const carrusel = document.getElementById('carrusel');
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
     const lightboxLink = document.getElementById('lightbox-link');
-    const porCarga = 120;
-    let indexActual = 0;
-    let imagenActualIndex = 0;
-    let msnry;
-      
-    function cargarImagenes() {
-      const fragment = document.createDocumentFragment();
-      const fin = Math.min(indexActual + porCarga, imagenes.length);
-      for (let i = indexActual; i < fin; i++) {
+    let paginaActual = 0;
+
+    function crearPagina(imagenesPagina, paginaNum) {
+      const pagina = document.createElement('div');
+      pagina.className = 'pagina';
+
+      imagenesPagina.forEach((nombre, i) => {
         const div = document.createElement('div');
         div.className = 'grid-item';
         const img = document.createElement('img');
-        img.src = `imagenes/${imagenes[i]}`;
+        const src = `imagenes/${nombre}`;
+        img.src = src;
+        img.alt = nombre;
         img.loading = 'lazy';
-        img.alt = imagenes[i];
-        img.addEventListener('click', () => mostrarLightbox(img.src, i));
+        img.addEventListener('click', () => mostrarLightbox(src));
         div.appendChild(img);
-        fragment.appendChild(div);
-      }
-      galeria.appendChild(fragment);
-  
-      imagesLoaded(galeria, function () {
-        if (!msnry) {
-          msnry = new Masonry(galeria, {
-            itemSelector: '.grid-item',
-            columnWidth: '.grid-sizer',
-            percentPosition: true
-          });
-        } else {
-          msnry.appended(Array.from(fragment.children));
-        }
+        pagina.appendChild(div);
       });
-  
-      indexActual = fin;
-    }
-  
-    window.addEventListener('scroll', () => {
-  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
-    cargarImagenes();
-  }
-});
-  
-    // Cerrar lightbox al hacer clic fuera de la imagen
-    lightbox.addEventListener('click', (e) => {
-      if (e.target === lightbox) {
-        cerrarLightbox();
-      }
-    });
-      ;
-  
-      function mostrarLightbox(src, index) {
-  lightboxImg.classList.remove('fade-in'); // Reinicia animación si ya existe
-  void lightboxImg.offsetWidth; // Fuerza reflow para reiniciar animación
-  lightboxImg.src = src;
-  lightboxLink.href = src;
-  imagenActualIndex = index;
-  lightbox.classList.add('show');
-  lightboxImg.classList.add('fade-in'); // Agrega clase con animación
-  document.body.classList.add('no-scroll');
-}
 
-  
+      carrusel.appendChild(pagina);
+    }
+
+    function mostrarLightbox(src) {
+      lightboxImg.src = src;
+      lightboxLink.href = src;
+      lightbox.classList.add('show');
+      document.body.classList.add('no-scroll');
+    }
+
     function cerrarLightbox() {
       lightbox.classList.remove('show');
       document.body.classList.remove('no-scroll');
-                }
-  
+    }
+
     document.addEventListener('keydown', (e) => {
-      if (!lightbox.classList.contains('show')) return;
-      if (e.key === 'ArrowRight') navegarLightbox(1);
-      if (e.key === 'ArrowLeft') navegarLightbox(-1);
       if (e.key === 'Escape') cerrarLightbox();
     });
-  
-    function navegarLightbox(direccion) {
-      imagenActualIndex += direccion;
-      if (imagenActualIndex < 0) imagenActualIndex = 0;
-      if (imagenActualIndex >= imagenes.length) imagenActualIndex = imagenes.length - 1;
-      const nuevaSrc = `imagenes/${imagenes[imagenActualIndex]}`;
-      lightboxImg.src = nuevaSrc;
-      lightboxLink.href = nuevaSrc;
+
+    function cargarPaginas() {
+      for (let i = 0; i < imagenes.length; i += imagenesPorPagina) {
+        const grupo = imagenes.slice(i, i + imagenesPorPagina);
+        crearPagina(grupo, i / imagenesPorPagina);
+      }
     }
-  
-    cargarImagenes();
+
+    cargarPaginas();
   </script>
-    
 </body>
 </html>

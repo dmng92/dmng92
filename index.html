@@ -6,27 +6,55 @@
   <title>dmng92</title>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --img-size: 33.333%;
-      --imgs-por-pagina: 16;
-    }
-    html, body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Manrope', sans-serif;
-      background-color: #1c1c1c;
-      color: #ccc;
-      overflow-x: hidden;
-    }
+    
+.lightbox img.fade-in {
+  animation: aparecer 0.4s ease-out;
+}
+
+@keyframes aparecer {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+:root {
+  --img-size: 33.333%;
+}
+    html {
+  scroll-behavior: smooth;
+  padding: 0;
+  margin: 0;
+  overflow-x: hidden;
+}
+    body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Manrope', sans-serif;
+  background-color: #1c1c1c;
+  color: #ccc;
+  overflow-x: hidden;
+}
+    body.no-scroll {
+  overflow: hidden;
+}
     h1 {
-      margin-top: 10px;
+      position: top;
+      top: 0;
+      width: 100%;
       text-align: center;
       background: rgba(28,28,28,0.95);
-      padding: 10px;
+      margin: 10px 0 0 0; /* Agrega 10px de margen en la parte superior */
+      padding: 0px;
       font-size: 8em;
       color: #ffcc00;
-      opacity: 0.7;
+      z-index: 100;
       transition: all 0.4s ease-in-out, opacity 0.3s;
+      opacity: 0.7;
     }
     h1:hover {
       opacity: 1;
@@ -36,53 +64,67 @@
       color: #ffcc00;
     }
     .subtitulo {
-      text-align: center;
-      font-size: 1em;
-      color: #999;
-      margin: 0;
-    }
-    .subtitulo a {
-      color: #999;
-      text-decoration: underline;
-    }
+  text-align: center;
+  font-size: 1em;
+  color: #999;
+  margin: -5px 0 7px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.subtitulo a {
+  color: #ffcc00;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.subtitulo a:hover {
+  text-decoration: underline;
+}
+
+
     @media (max-width: 600px) {
       h1 {
-        font-size: 2.5em;
+        font-size: 2em;
+        padding: 0px;
       }
     }
+    .grid {
+  position: relative;
+  margin: 0 auto;
+  max-width: 1200px;
+}
 
-    .carrusel {
-      display: flex;
-      overflow-x: scroll;
-      scroll-snap-type: x mandatory;
-      scroll-behavior: smooth;
-      width: 100vw;
-      cursor: grab;
-    }
-    .carrusel.dragging {
-      cursor: grabbing;
-    }
-    .pagina {
-      flex: 0 0 100%;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      scroll-snap-align: start;
-      padding: 10px;
-    }
+    .grid-sizer,
+.grid-item {
+  width: calc(var(--img-size) );
+  margin-bottom: 10px;
+}
     .grid-item {
-      width: calc(var(--img-size) - 10px);
-      margin-bottom: 10px;
+      margin-bottom: 0px;
     }
     .grid-item img {
-      width: 100%;
-      height: auto;
-      max-width: 2000px;
-      display: block;
-      border-radius: 0px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      transition: transform 0.3s, box-shadow 0.3s;
-      cursor: pointer;
+  width: 100%;
+  height: auto;
+  max-width: 2000px;
+  display: block;
+  border-radius: 0px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+}
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #666;
+      font-size: 0.9em;
+    }
+    .footer-icon {
+      vertical-align: middle;
+      margin-right: 5px;
+      width: 20px;
     }
     .lightbox {
       position: fixed;
@@ -97,183 +139,233 @@
       flex-direction: column;
       visibility: hidden;
       opacity: 0;
-      transition: opacity 0.5s ease;
+      transition: opacity 0.3s ease;
       z-index: 999;
     }
     .lightbox img {
       max-width: 90%;
       max-height: 80vh;
+      border-radius: 0px;
     }
     .lightbox .controls {
       margin-top: 20px;
       display: flex;
+      align-items: center;
       gap: 12px;
     }
-    .link-btn {
+    .lightbox .link-btn {
+      background: none;
       border: 1px solid #888;
       color: #ccc;
-      background: none;
       padding: 8px 16px;
       border-radius: 4px;
       text-decoration: none;
+      font-size: 0.9em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
       transition: background 0.2s, color 0.2s;
     }
-    .link-btn:hover {
+    .lightbox .link-btn:hover {
       background: #333;
       color: #fff;
     }
-    .close-btn-inline {
+    .lightbox .close-btn-inline {
       font-size: 20px;
       color: #aaa;
       background: none;
       border: none;
       cursor: pointer;
     }
-    .close-btn-inline:hover {
+    .lightbox .close-btn-inline:hover {
       color: #fff;
     }
     .lightbox.show {
+      cursor: default;
       visibility: visible;
       opacity: 1;
     }
-    footer {
-      text-align: center;
-      padding: 20px;
-      color: #666;
-      font-size: 0.9em;
+    .lightbox.show:hover .nav-arrow {
+      opacity: 1;
+    }
+    .nav-arrow {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 33%;
+      cursor: pointer;
+      z-index: 1000;
+    }
+    .nav-left {
+      left: 0;
+    }
+    .nav-right {
+      right: 0;
     }
   </style>
 </head>
 <body>
   <h1><a href="https://dmng92.github.io/dmng92/">thisisaformicatable</a></h1>
   <div class="subtitulo">
-    <a href="https://instagram.com/tu_usuario" target="_blank">@tu_usuario</a>
+    <span>ig</span>
+    <a href="https://instagram.com/_nicoantico" target="_blank" rel="noopener noreferrer">@_nicoantico</a>
+  </div>
+  
+
+  <div class="grid" id="galeria">
+    <div class="grid-sizer"></div>
   </div>
 
-  <div class="carrusel" id="carrusel"></div>
-
   <div class="lightbox" id="lightbox">
+    <div class="nav-arrow nav-left" onclick="navegarLightbox(-1)"></div>
     <img src="" alt="Imagen ampliada" id="lightbox-img">
     <div class="controls">
-      <a id="lightbox-link" class="link-btn" href="#" target="_blank">🔗 Fullsize</a>
+      <a id="lightbox-link" class="link-btn" href="#" target="_blank">
+        <span>🔗</span> Fullsize
+      </a>
       <button class="close-btn-inline" onclick="cerrarLightbox()">&times;</button>
     </div>
+    <div class="nav-arrow nav-right" onclick="navegarLightbox(1)"></div>
   </div>
   <footer></footer>
 
+
+  <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
+  <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
   <script src="imagenes.js"></script>
+ 
   <script>
-    const imagenesPorPagina = 16;
-    const carrusel = document.getElementById('carrusel');
+    const galeria = document.getElementById('galeria');
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
     const lightboxLink = document.getElementById('lightbox-link');
-
+  
+    const porPagina = 16;
     let paginaActual = 0;
-    let paginasCargadas = 0;
-
-    function crearPagina(imagenesPagina) {
-      const pagina = document.createElement('div');
-      pagina.className = 'pagina';
-
-      imagenesPagina.forEach((nombre) => {
+    let imagenActualIndex = 0;
+    let msnry;
+  
+    function mostrarPagina(pagina) {
+      galeria.innerHTML = '<div class="grid-sizer"></div>';
+      const inicio = pagina * porPagina;
+      const fin = Math.min(inicio + porPagina, imagenes.length);
+      const fragment = document.createDocumentFragment();
+  
+      for (let i = inicio; i < fin; i++) {
         const div = document.createElement('div');
         div.className = 'grid-item';
         const img = document.createElement('img');
-        const src = `imagenes/${nombre}`;
-        img.src = src;
-        img.alt = nombre;
+        img.src = `imagenes/${imagenes[i]}`;
         img.loading = 'lazy';
-        img.addEventListener('click', () => mostrarLightbox(src));
+        img.alt = imagenes[i];
+        img.addEventListener('click', () => mostrarLightbox(img.src, i));
         div.appendChild(img);
-        pagina.appendChild(div);
+        fragment.appendChild(div);
+      }
+  
+      galeria.appendChild(fragment);
+  
+      imagesLoaded(galeria, () => {
+        if (!msnry) {
+          msnry = new Masonry(galeria, {
+            itemSelector: '.grid-item',
+            columnWidth: '.grid-sizer',
+            percentPosition: true
+          });
+        } else {
+          msnry.reloadItems();
+          msnry.layout();
+        }
       });
-
-      carrusel.appendChild(pagina);
+  
+      // Pre-cargar siguiente página
+      const siguienteInicio = (pagina + 1) * porPagina;
+      for (let i = siguienteInicio; i < siguienteInicio + porPagina && i < imagenes.length; i++) {
+        const preloadImg = new Image();
+        preloadImg.src = `imagenes/${imagenes[i]}`;
+      }
+  
+      paginaActual = pagina;
     }
-
-    function cargarSiguientePagina() {
-      if (paginasCargadas * imagenesPorPagina >= imagenes.length) return;
-      const inicio = paginasCargadas * imagenesPorPagina;
-      const grupo = imagenes.slice(inicio, inicio + imagenesPorPagina);
-      crearPagina(grupo);
-      paginasCargadas++;
-    }
-
-    function mostrarLightbox(src) {
+  
+    function mostrarLightbox(src, index) {
+      lightboxImg.classList.remove('fade-in');
+      void lightboxImg.offsetWidth;
       lightboxImg.src = src;
       lightboxLink.href = src;
+      imagenActualIndex = index;
       lightbox.classList.add('show');
+      lightboxImg.classList.add('fade-in');
       document.body.classList.add('no-scroll');
     }
-
+  
     function cerrarLightbox() {
       lightbox.classList.remove('show');
       document.body.classList.remove('no-scroll');
     }
-
+  
     document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('show')) return;
+      if (e.key === 'ArrowRight') navegarLightbox(1);
+      if (e.key === 'ArrowLeft') navegarLightbox(-1);
       if (e.key === 'Escape') cerrarLightbox();
     });
-
-    // Precarga dinámica cuando se acerca al final
-    carrusel.addEventListener('scroll', () => {
-      const scrollPos = carrusel.scrollLeft;
-      const maxScroll = carrusel.scrollWidth - carrusel.clientWidth;
-      if (scrollPos + 100 >= maxScroll) {
-        cargarSiguientePagina();
+  
+    function navegarLightbox(direccion) {
+      imagenActualIndex += direccion;
+      if (imagenActualIndex < 0) imagenActualIndex = 0;
+      if (imagenActualIndex >= imagenes.length) imagenActualIndex = imagenes.length - 1;
+      const nuevaSrc = `imagenes/${imagenes[imagenActualIndex]}`;
+      lightboxImg.src = nuevaSrc;
+      lightboxLink.href = nuevaSrc;
+    }
+  
+    // Navegación por arrastre horizontal
+    let startX = null;
+    galeria.addEventListener('touchstart', e => {
+      startX = e.touches[0].clientX;
+    });
+  
+    galeria.addEventListener('touchend', e => {
+      if (startX === null) return;
+      const endX = e.changedTouches[0].clientX;
+      const delta = startX - endX;
+      if (Math.abs(delta) > 50) {
+        if (delta > 0 && (paginaActual + 1) * porPagina < imagenes.length) {
+          mostrarPagina(paginaActual + 1);
+        } else if (delta < 0 && paginaActual > 0) {
+          mostrarPagina(paginaActual - 1);
+        }
       }
+      startX = null;
     });
-
-    // Arrastre horizontal con mouse o touch
-    let isDown = false;
-    let startX;
-    let scrollLeft;
-
-    carrusel.addEventListener('mousedown', (e) => {
-      isDown = true;
-      carrusel.classList.add('dragging');
-      startX = e.pageX - carrusel.offsetLeft;
-      scrollLeft = carrusel.scrollLeft;
+  
+    // Opcional: soporte con mouse también
+    let mouseStartX = null;
+    galeria.addEventListener('mousedown', e => {
+      mouseStartX = e.clientX;
     });
-
-    carrusel.addEventListener('mouseleave', () => {
-      isDown = false;
-      carrusel.classList.remove('dragging');
+  
+    galeria.addEventListener('mouseup', e => {
+      if (mouseStartX === null) return;
+      const delta = mouseStartX - e.clientX;
+      if (Math.abs(delta) > 50) {
+        if (delta > 0 && (paginaActual + 1) * porPagina < imagenes.length) {
+          mostrarPagina(paginaActual + 1);
+        } else if (delta < 0 && paginaActual > 0) {
+          mostrarPagina(paginaActual - 1);
+        }
+      }
+      mouseStartX = null;
     });
-
-    carrusel.addEventListener('mouseup', () => {
-      isDown = false;
-      carrusel.classList.remove('dragging');
+  
+    lightbox.addEventListener('click', e => {
+      if (e.target === lightbox) cerrarLightbox();
     });
-
-    carrusel.addEventListener('mousemove', (e) => {
-      if (!isDown) return;
-      e.preventDefault();
-      const x = e.pageX - carrusel.offsetLeft;
-      const walk = (x - startX) * 1.5;
-      carrusel.scrollLeft = scrollLeft - walk;
-    });
-
-    carrusel.addEventListener('touchstart', (e) => {
-      isDown = true;
-      startX = e.touches[0].pageX;
-      scrollLeft = carrusel.scrollLeft;
-    });
-
-    carrusel.addEventListener('touchmove', (e) => {
-      if (!isDown) return;
-      const x = e.touches[0].pageX;
-      const walk = (x - startX) * 1.2;
-      carrusel.scrollLeft = scrollLeft - walk;
-    });
-
-    carrusel.addEventListener('touchend', () => {
-      isDown = false;
-    });
-
-    // Cargar primera página al iniciar
-    cargarSiguientePagina();
+  
+    mostrarPagina(0);
   </script>
+  
+    
 </body>
 </html>

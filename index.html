@@ -6,6 +6,40 @@
   <title>dmng92</title>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600&display=swap" rel="stylesheet">
   <style>
+
+  .flecha-navegacion {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2.5rem;
+    background: rgba(0, 0, 0, 0.1);
+    color: #666;
+    border: none;
+    cursor: pointer;
+    z-index: 1000;
+    padding: 0.5rem 0.8rem;
+    border-radius: 50%;
+    transition: background 0.2s;
+  }
+
+  .flecha-navegacion:hover {
+    background: rgba(0, 0, 0, 0.2);
+  }
+
+  .flecha-izquierda {
+    left: 10px;
+  }
+
+  .flecha-derecha {
+    right: 10px;
+  }
+
+  @media (max-width: 768px) {
+    .flecha-navegacion {
+      display: none;
+    }
+  }
+
     
 .lightbox img.fade-in {
   animation: aparecer 0.4s ease-out;
@@ -216,6 +250,10 @@
     <div class="grid-sizer"></div>
   </div>
 
+  <button id="flechaIzquierda" class="flecha-navegacion flecha-izquierda">&#10094;</button>
+  <button id="flechaDerecha" class="flecha-navegacion flecha-derecha">&#10095;</button>
+  
+
   <div class="lightbox" id="lightbox">
     <div class="nav-arrow nav-left" onclick="navegarLightbox(-1)"></div>
     <img src="" alt="Imagen ampliada" id="lightbox-img">
@@ -239,15 +277,19 @@
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
     const lightboxLink = document.getElementById('lightbox-link');
-    const porCarga = 120;
-    let indexActual = 0;
+  
+    const porPagina = 16;
+    let paginaActual = 0;
     let imagenActualIndex = 0;
     let msnry;
-      
-    function cargarImagenes() {
+  
+    function mostrarPagina(pagina) {
+      galeria.innerHTML = '<div class="grid-sizer"></div>';
+      const inicio = pagina * porPagina;
+      const fin = Math.min(inicio + porPagina, imagenes.length);
       const fragment = document.createDocumentFragment();
-      const fin = Math.min(indexActual + porCarga, imagenes.length);
-      for (let i = indexActual; i < fin; i++) {
+  
+      for (let i = inicio; i < fin; i++) {
         const div = document.createElement('div');
         div.className = 'grid-item';
         const img = document.createElement('img');
@@ -258,9 +300,10 @@
         div.appendChild(img);
         fragment.appendChild(div);
       }
+  
       galeria.appendChild(fragment);
   
-      imagesLoaded(galeria, function () {
+      imagesLoaded(galeria, () => {
         if (!msnry) {
           msnry = new Masonry(galeria, {
             itemSelector: '.grid-item',
@@ -268,43 +311,36 @@
             percentPosition: true
           });
         } else {
-          msnry.appended(Array.from(fragment.children));
+          msnry.reloadItems();
+          msnry.layout();
         }
       });
   
-      indexActual = fin;
+      // Pre-cargar siguiente página
+      const siguienteInicio = (pagina + 1) * porPagina;
+      for (let i = siguienteInicio; i < siguienteInicio + porPagina && i < imagenes.length; i++) {
+        const preloadImg = new Image();
+        preloadImg.src = `imagenes/${imagenes[i]}`;
+      }
+  
+      paginaActual = pagina;
     }
   
-    window.addEventListener('scroll', () => {
-  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
-    cargarImagenes();
-  }
-});
-  
-    // Cerrar lightbox al hacer clic fuera de la imagen
-    lightbox.addEventListener('click', (e) => {
-      if (e.target === lightbox) {
-        cerrarLightbox();
-      }
-    });
-      ;
-  
-      function mostrarLightbox(src, index) {
-  lightboxImg.classList.remove('fade-in'); // Reinicia animación si ya existe
-  void lightboxImg.offsetWidth; // Fuerza reflow para reiniciar animación
-  lightboxImg.src = src;
-  lightboxLink.href = src;
-  imagenActualIndex = index;
-  lightbox.classList.add('show');
-  lightboxImg.classList.add('fade-in'); // Agrega clase con animación
-  document.body.classList.add('no-scroll');
-}
-
+    function mostrarLightbox(src, index) {
+      lightboxImg.classList.remove('fade-in');
+      void lightboxImg.offsetWidth;
+      lightboxImg.src = src;
+      lightboxLink.href = src;
+      imagenActualIndex = index;
+      lightbox.classList.add('show');
+      lightboxImg.classList.add('fade-in');
+      document.body.classList.add('no-scroll');
+    }
   
     function cerrarLightbox() {
       lightbox.classList.remove('show');
       document.body.classList.remove('no-scroll');
-                }
+    }
   
     document.addEventListener('keydown', (e) => {
       if (!lightbox.classList.contains('show')) return;
@@ -322,8 +358,65 @@
       lightboxLink.href = nuevaSrc;
     }
   
-    cargarImagenes();
+    // Navegación por arrastre horizontal
+    let startX = null;
+    galeria.addEventListener('touchstart', e => {
+      startX = e.touches[0].clientX;
+    });
+  
+    galeria.addEventListener('touchend', e => {
+      if (startX === null) return;
+      const endX = e.changedTouches[0].clientX;
+      const delta = startX - endX;
+      if (Math.abs(delta) > 50) {
+        if (delta > 0 && (paginaActual + 1) * porPagina < imagenes.length) {
+          mostrarPagina(paginaActual + 1);
+        } else if (delta < 0 && paginaActual > 0) {
+          mostrarPagina(paginaActual - 1);
+        }
+      }
+      startX = null;
+    });
+  
+    // Opcional: soporte con mouse también
+    let mouseStartX = null;
+    galeria.addEventListener('mousedown', e => {
+      mouseStartX = e.clientX;
+    });
+  
+    galeria.addEventListener('mouseup', e => {
+      if (mouseStartX === null) return;
+      const delta = mouseStartX - e.clientX;
+      if (Math.abs(delta) > 50) {
+        if (delta > 0 && (paginaActual + 1) * porPagina < imagenes.length) {
+          mostrarPagina(paginaActual + 1);
+        } else if (delta < 0 && paginaActual > 0) {
+          mostrarPagina(paginaActual - 1);
+        }
+      }
+      mouseStartX = null;
+    });
+  
+    lightbox.addEventListener('click', e => {
+      if (e.target === lightbox) cerrarLightbox();
+    });
+  
+    mostrarPagina(0);
+    
+    document.getElementById('flechaIzquierda').addEventListener('click', () => {
+  if (paginaActual > 0) {
+    mostrarPagina(paginaActual - 1);
+  }
+});
+
+document.getElementById('flechaDerecha').addEventListener('click', () => {
+  if ((paginaActual + 1) * porPagina < imagenes.length) {
+    mostrarPagina(paginaActual + 1);
+  }
+});
+
   </script>
+  
     
 </body>
 </html>

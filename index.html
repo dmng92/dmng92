@@ -6,32 +6,31 @@
   <title>dmng92</title>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600&display=swap" rel="stylesheet">
   <style>
-
   .flecha-navegacion {
     position: fixed;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 2.5rem;
-    background: rgba(0, 0, 0, 0.1);
-    color: #666;
+    bottom: 20px;
+    font-size: 2rem;
+    background: rgba(255, 255, 255, 0.08);
+    color: #aaa;
     border: none;
     cursor: pointer;
     z-index: 1000;
     padding: 0.5rem 0.8rem;
     border-radius: 50%;
-    transition: background 0.2s;
+    transition: background 0.2s, color 0.2s;
   }
 
   .flecha-navegacion:hover {
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
   }
 
   .flecha-izquierda {
-    left: 10px;
+    left: 20px;
   }
 
   .flecha-derecha {
-    right: 10px;
+    right: 20px;
   }
 
   @media (max-width: 768px) {
@@ -284,37 +283,24 @@
     let msnry;
   
     function mostrarPagina(pagina) {
-      galeria.innerHTML = '<div class="grid-sizer"></div>';
-      const inicio = pagina * porPagina;
-      const fin = Math.min(inicio + porPagina, imagenes.length);
-      const fragment = document.createDocumentFragment();
-  
-      for (let i = inicio; i < fin; i++) {
-        const div = document.createElement('div');
-        div.className = 'grid-item';
-        const img = document.createElement('img');
-        img.src = `imagenes/${imagenes[i]}`;
-        img.loading = 'lazy';
-        img.alt = imagenes[i];
-        img.addEventListener('click', () => mostrarLightbox(img.src, i));
-        div.appendChild(img);
-        fragment.appendChild(div);
-      }
-  
-      galeria.appendChild(fragment);
-  
-      imagesLoaded(galeria, () => {
-        if (!msnry) {
-          msnry = new Masonry(galeria, {
-            itemSelector: '.grid-item',
-            columnWidth: '.grid-sizer',
-            percentPosition: true
-          });
-        } else {
-          msnry.reloadItems();
-          msnry.layout();
-        }
-      });
+  const inicio = pagina * porPagina;
+  const fin = inicio + porPagina;
+  const elementos = document.querySelectorAll('.grid-item');
+
+  elementos.forEach((el, i) => {
+    el.style.display = i >= inicio && i < fin ? 'block' : 'none';
+  });
+
+  paginaActual = pagina;
+
+  // Actualiza visibilidad de flechas
+  const btnIzq = document.getElementById('flechaIzquierda');
+  const btnDer = document.getElementById('flechaDerecha');
+
+  btnIzq.style.display = pagina > 0 ? 'block' : 'none';
+  btnDer.style.display = fin < imagenes.length ? 'block' : 'none';
+}
+;
   
       // Pre-cargar siguiente página
       const siguienteInicio = (pagina + 1) * porPagina;
@@ -324,7 +310,7 @@
       }
   
       paginaActual = pagina;
-    }
+    
   
     function mostrarLightbox(src, index) {
       lightboxImg.classList.remove('fade-in');
@@ -359,7 +345,7 @@
     }
   
     // Navegación por arrastre horizontal
-    let startX = null;
+    let startX = 0;
     galeria.addEventListener('touchstart', e => {
       startX = e.touches[0].clientX;
     });
@@ -415,8 +401,25 @@ document.getElementById('flechaDerecha').addEventListener('click', () => {
   }
 });
 
+document.getElementById('flechaIzquierda').addEventListener('click', () => {
+  if (paginaActual > 0) {
+    mostrarPagina(paginaActual - 1);
+  }
+});
+
+document.getElementById('flechaDerecha').addEventListener('click', () => {
+  if ((paginaActual + 1) * porPagina < imagenes.length) {
+    mostrarPagina(paginaActual + 1);
+  }
+});
+
+
+
   </script>
-  
+
+<button id="flechaIzquierda" class="flecha-navegacion flecha-izquierda">&#10094;</button>
+<button id="flechaDerecha" class="flecha-navegacion flecha-derecha">&#10095;</button>
+
     
 </body>
 </html>

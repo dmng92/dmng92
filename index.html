@@ -296,7 +296,7 @@
         const div = document.createElement('div');
         div.className = 'grid-item';
         const img = document.createElement('img');
-        img.src = 'imagenesBaja/${imagenesBaja[i]}';
+        img.src = `imagenesBaja/${imagenesBaja[i]}`;
         img.loading = 'lazy';
         img.alt = imagenesAlta[i];
         img.addEventListener('click', () => mostrarLightbox(img.src, i));
@@ -323,7 +323,7 @@
       const siguienteInicio = (pagina + 1) * porPagina;
       for (let i = siguienteInicio; i < siguienteInicio + porPagina && i < imagenesBaja.length; i++) {
         const preloadImg = new Image();
-        preloadImg.src = 'imagenesBaja/${imagenesBaja[i]}';
+        preloadImg.src = `imagenesBaja/${imagenesBaja[i]}`;
       }
   
       paginaActual = pagina;
@@ -356,7 +356,7 @@
       imagenActualIndex += direccion;
       if (imagenActualIndex < 0) imagenActualIndex = 0;
       if (imagenActualIndex >= imagenesBaja.length) imagenActualIndex = imagenesBaja.length - 1;
-      const nuevaSrc = 'imagenesBaja/${imagenesBaja[imagenActualIndex]}';
+      const nuevaSrc = `imagenesBaja/${imagenesBaja[imagenActualIndex]}`;
       lightboxImg.src = nuevaSrc;
       lightboxLink.href = nuevaSrc;
     }

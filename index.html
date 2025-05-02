@@ -283,24 +283,37 @@
     let msnry;
   
     function mostrarPagina(pagina) {
-  const inicio = pagina * porPagina;
-  const fin = inicio + porPagina;
-  const elementos = document.querySelectorAll('.grid-item');
-
-  elementos.forEach((el, i) => {
-    el.style.display = i >= inicio && i < fin ? 'block' : 'none';
-  });
-
-  paginaActual = pagina;
-
-  // Actualiza visibilidad de flechas
-  const btnIzq = document.getElementById('flechaIzquierda');
-  const btnDer = document.getElementById('flechaDerecha');
-
-  btnIzq.style.display = pagina > 0 ? 'block' : 'none';
-  btnDer.style.display = fin < imagenes.length ? 'block' : 'none';
-}
-;
+      galeria.innerHTML = '<div class="grid-sizer"></div>';
+      const inicio = pagina * porPagina;
+      const fin = Math.min(inicio + porPagina, imagenes.length);
+      const fragment = document.createDocumentFragment();
+  
+      for (let i = inicio; i < fin; i++) {
+        const div = document.createElement('div');
+        div.className = 'grid-item';
+        const img = document.createElement('img');
+        img.src = `imagenes/${imagenes[i]}`;
+        img.loading = 'lazy';
+        img.alt = imagenes[i];
+        img.addEventListener('click', () => mostrarLightbox(img.src, i));
+        div.appendChild(img);
+        fragment.appendChild(div);
+      }
+  
+      galeria.appendChild(fragment);
+  
+      imagesLoaded(galeria, () => {
+        if (!msnry) {
+          msnry = new Masonry(galeria, {
+            itemSelector: '.grid-item',
+            columnWidth: '.grid-sizer',
+            percentPosition: true
+          });
+        } else {
+          msnry.reloadItems();
+          msnry.layout();
+        }
+      });
   
       // Pre-cargar siguiente página
       const siguienteInicio = (pagina + 1) * porPagina;
@@ -310,7 +323,7 @@
       }
   
       paginaActual = pagina;
-    
+    }
   
     function mostrarLightbox(src, index) {
       lightboxImg.classList.remove('fade-in');

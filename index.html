@@ -239,19 +239,15 @@
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
     const lightboxLink = document.getElementById('lightbox-link');
-  
-    const porPagina = 16;
-    let paginaActual = 0;
+    const porCarga = 120;
+    let indexActual = 0;
     let imagenActualIndex = 0;
     let msnry;
-  
-    function mostrarPagina(pagina) {
-      galeria.innerHTML = '<div class="grid-sizer"></div>';
-      const inicio = pagina * porPagina;
-      const fin = Math.min(inicio + porPagina, imagenes.length);
+      
+    function cargarImagenes() {
       const fragment = document.createDocumentFragment();
-  
-      for (let i = inicio; i < fin; i++) {
+      const fin = Math.min(indexActual + porCarga, imagenes.length);
+      for (let i = indexActual; i < fin; i++) {
         const div = document.createElement('div');
         div.className = 'grid-item';
         const img = document.createElement('img');
@@ -262,10 +258,9 @@
         div.appendChild(img);
         fragment.appendChild(div);
       }
-  
       galeria.appendChild(fragment);
   
-      imagesLoaded(galeria, () => {
+      imagesLoaded(galeria, function () {
         if (!msnry) {
           msnry = new Masonry(galeria, {
             itemSelector: '.grid-item',
@@ -273,36 +268,43 @@
             percentPosition: true
           });
         } else {
-          msnry.reloadItems();
-          msnry.layout();
+          msnry.appended(Array.from(fragment.children));
         }
       });
   
-      // Pre-cargar siguiente página
-      const siguienteInicio = (pagina + 1) * porPagina;
-      for (let i = siguienteInicio; i < siguienteInicio + porPagina && i < imagenes.length; i++) {
-        const preloadImg = new Image();
-        preloadImg.src = `imagenes/${imagenes[i]}`;
+      indexActual = fin;
+    }
+  
+    window.addEventListener('scroll', () => {
+  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
+    cargarImagenes();
+  }
+});
+  
+    // Cerrar lightbox al hacer clic fuera de la imagen
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) {
+        cerrarLightbox();
       }
+    });
+      ;
   
-      paginaActual = pagina;
-    }
-  
-    function mostrarLightbox(src, index) {
-      lightboxImg.classList.remove('fade-in');
-      void lightboxImg.offsetWidth;
-      lightboxImg.src = src;
-      lightboxLink.href = src;
-      imagenActualIndex = index;
-      lightbox.classList.add('show');
-      lightboxImg.classList.add('fade-in');
-      document.body.classList.add('no-scroll');
-    }
+      function mostrarLightbox(src, index) {
+  lightboxImg.classList.remove('fade-in'); // Reinicia animación si ya existe
+  void lightboxImg.offsetWidth; // Fuerza reflow para reiniciar animación
+  lightboxImg.src = src;
+  lightboxLink.href = src;
+  imagenActualIndex = index;
+  lightbox.classList.add('show');
+  lightboxImg.classList.add('fade-in'); // Agrega clase con animación
+  document.body.classList.add('no-scroll');
+}
+
   
     function cerrarLightbox() {
       lightbox.classList.remove('show');
       document.body.classList.remove('no-scroll');
-    }
+                }
   
     document.addEventListener('keydown', (e) => {
       if (!lightbox.classList.contains('show')) return;
@@ -320,52 +322,8 @@
       lightboxLink.href = nuevaSrc;
     }
   
-    // Navegación por arrastre horizontal
-    let startX = null;
-    galeria.addEventListener('touchstart', e => {
-      startX = e.touches[0].clientX;
-    });
-  
-    galeria.addEventListener('touchend', e => {
-      if (startX === null) return;
-      const endX = e.changedTouches[0].clientX;
-      const delta = startX - endX;
-      if (Math.abs(delta) > 50) {
-        if (delta > 0 && (paginaActual + 1) * porPagina < imagenes.length) {
-          mostrarPagina(paginaActual + 1);
-        } else if (delta < 0 && paginaActual > 0) {
-          mostrarPagina(paginaActual - 1);
-        }
-      }
-      startX = null;
-    });
-  
-    // Opcional: soporte con mouse también
-    let mouseStartX = null;
-    galeria.addEventListener('mousedown', e => {
-      mouseStartX = e.clientX;
-    });
-  
-    galeria.addEventListener('mouseup', e => {
-      if (mouseStartX === null) return;
-      const delta = mouseStartX - e.clientX;
-      if (Math.abs(delta) > 50) {
-        if (delta > 0 && (paginaActual + 1) * porPagina < imagenes.length) {
-          mostrarPagina(paginaActual + 1);
-        } else if (delta < 0 && paginaActual > 0) {
-          mostrarPagina(paginaActual - 1);
-        }
-      }
-      mouseStartX = null;
-    });
-  
-    lightbox.addEventListener('click', e => {
-      if (e.target === lightbox) cerrarLightbox();
-    });
-  
-    mostrarPagina(0);
+    cargarImagenes();
   </script>
-  
     
 </body>
 </html>

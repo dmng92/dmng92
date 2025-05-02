@@ -1,158 +1,439 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Galería de Fotos</title>
-  <link rel="stylesheet" href="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>dmng92</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600&display=swap" rel="stylesheet">
   <style>
+  .flecha-navegacion {
+    position: fixed;
+    bottom: 20px;
+    font-size: 2rem;
+    background: rgba(255, 255, 255, 0.08);
+    color: #aaa;
+    border: none;
+    cursor: pointer;
+    z-index: 1000;
+    padding: 0.5rem 0.8rem;
+    border-radius: 50%;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .flecha-navegacion:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+  }
+
+  .flecha-izquierda {
+    left: 20px;
+  }
+
+  .flecha-derecha {
+    right: 20px;
+  }
+
+  @media (max-width: 768px) {
+    .flecha-navegacion {
+      display: none;
+    }
+  }
+
+    
+.lightbox img.fade-in {
+  animation: aparecer 0.4s ease-out;
+}
+
+@keyframes aparecer {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+:root {
+  --img-size: 33.333%;
+}
+    html {
+  scroll-behavior: smooth;
+  padding: 0;
+  margin: 0;
+  overflow-x: hidden;
+}
     body {
-      margin: 0;
-      font-family: sans-serif;
-      background: #111;
-      color: white;
+  margin: 0;
+  padding: 0;
+  font-family: 'Manrope', sans-serif;
+  background-color: #1c1c1c;
+  color: #ccc;
+  overflow-x: hidden;
+}
+    body.no-scroll {
+  overflow: hidden;
+}
+    h1 {
+      position: top;
+      top: 0;
+      width: 100%;
+      text-align: center;
+      background: rgba(28,28,28,0.95);
+      margin: 10px 0 0 0; /* Agrega 10px de margen en la parte superior */
+      padding: 0px;
+      font-size: 8em;
+      color: #ffcc00;
+      z-index: 100;
+      transition: all 0.4s ease-in-out, opacity 0.3s;
+      opacity: 0.7;
+    }
+    h1:hover {
+      opacity: 1;
+    }
+    h1 a {
+      text-decoration: none;
+      color: #ffcc00;
+    }
+    .subtitulo {
+  text-align: center;
+  font-size: 1em;
+  color: #999;
+  margin: -5px 0 7px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.subtitulo a {
+  color: #ffcc00;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.subtitulo a:hover {
+  text-decoration: underline;
+}
+
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2em;
+        padding: 0px;
+      }
     }
     .grid {
-      column-count: 4;
-      column-gap: 0;
-      max-width: 1000px;
-      margin: auto;
-    }
+  position: relative;
+  margin: 0 auto;
+  max-width: 1200px;
+}
+
+    .grid-sizer,
+.grid-item {
+  width: calc(var(--img-size) );
+  margin-bottom: 10px;
+}
     .grid-item {
-      break-inside: avoid;
-      margin-bottom: 10px;
+      margin-bottom: 0px;
     }
     .grid-item img {
-      width: 100%;
-      display: block;
-      border-radius: 8px;
+  width: 100%;
+  height: auto;
+  max-width: 2000px;
+  display: block;
+  border-radius: 0px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+}
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #666;
+      font-size: 0.9em;
     }
-    @media (max-width: 1024px) {
-      .grid {
-        column-count: 3;
-      }
+    .footer-icon {
+      vertical-align: middle;
+      margin-right: 5px;
+      width: 20px;
     }
-    @media (max-width: 768px) {
-      .grid {
-        column-count: 2;
-      }
-    }
-    @media (max-width: 480px) {
-      .grid {
-        column-count: 1;
-      }
-    }
-    .paginacion {
+    .lightbox {
       position: fixed;
-      bottom: 16px;
-      width: 100%;
-      pointer-events: none;
-      z-index: 10;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.9);
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
-      padding: 0 20px;
+      flex-direction: column;
       visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 999;
     }
-    .flecha {
-      pointer-events: auto;
-      font-size: 2em;
-      color: #888;
+    .lightbox img {
+      max-width: 90%;
+      max-height: 80vh;
+      border-radius: 0px;
+    }
+    .lightbox .controls {
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .lightbox .link-btn {
+      background: none;
+      border: 1px solid #888;
+      color: #ccc;
+      padding: 8px 16px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-size: 0.9em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .lightbox .link-btn:hover {
+      background: #333;
+      color: #fff;
+    }
+    .lightbox .close-btn-inline {
+      font-size: 20px;
+      color: #aaa;
       background: none;
       border: none;
       cursor: pointer;
-      opacity: 0.6;
-      transition: opacity 0.2s;
     }
-    .flecha:hover {
+    .lightbox .close-btn-inline:hover {
+      color: #fff;
+    }
+    .lightbox.show {
+      cursor: default;
+      visibility: visible;
       opacity: 1;
-      color: #ccc;
     }
-    .numero-pagina {
-      color: #aaa;
-      font-size: 1em;
-      pointer-events: none;
+    .lightbox.show:hover .nav-arrow {
+      opacity: 1;
     }
-    @media (max-width: 600px) {
-      .flecha {
-        font-size: 1.5em;
-      }
+    .nav-arrow {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 33%;
+      cursor: pointer;
+      z-index: 1000;
+    }
+    .nav-left {
+      left: 0;
+    }
+    .nav-right {
+      right: 0;
     }
   </style>
 </head>
 <body>
-  <div class="grid" id="galeria"></div>
-
-  <div class="paginacion" id="paginacion">
-    <button id="flechaIzquierda" class="flecha" onclick="paginaAnterior()">&larr;</button>
-    <div class="numero-pagina" id="numeroPagina"></div>
-    <button id="flechaDerecha" class="flecha" onclick="paginaSiguiente()">&rarr;</button>
+  <h1><a href="https://dmng92.github.io/dmng92/">thisisaformicatable</a></h1>
+  <div class="subtitulo">
+    <span>ig</span>
+    <a href="https://instagram.com/_nicoantico" target="_blank" rel="noopener noreferrer">@_nicoantico</a>
   </div>
+  
+
+  <div class="grid" id="galeria">
+    <div class="grid-sizer"></div>
+  </div>
+
+  <button id="flechaIzquierda" class="flecha-navegacion flecha-izquierda">&#10094;</button>
+  <button id="flechaDerecha" class="flecha-navegacion flecha-derecha">&#10095;</button>
+  
+
+  <div class="lightbox" id="lightbox">
+    <div class="nav-arrow nav-left" onclick="navegarLightbox(-1)"></div>
+    <img src="" alt="Imagen ampliada" id="lightbox-img">
+    <div class="controls">
+      <a id="lightbox-link" class="link-btn" href="#" target="_blank">
+        <span>🔗</span> Fullsize
+      </a>
+      <button class="close-btn-inline" onclick="cerrarLightbox()">&times;</button>
+    </div>
+    <div class="nav-arrow nav-right" onclick="navegarLightbox(1)"></div>
+  </div>
+  <footer></footer>
+
 
   <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
   <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+  <script src="imagenes.js"></script>
+ 
   <script>
-    const galeria = document.getElementById("galeria");
+    const galeria = document.getElementById('galeria');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const lightboxLink = document.getElementById('lightbox-link');
+  
     const porPagina = 16;
     let paginaActual = 0;
-    let totalPaginas = 0;
-
-    const cargarImagenes = () => {
-      for (let i = 1; i <= 80; i++) {
-        const div = document.createElement("div");
-        div.className = "grid-item";
-        div.innerHTML = `<img src="https://picsum.photos/seed/${i}/600/400" alt="Foto ${i}" />`;
-        galeria.appendChild(div);
-      }
-      imagesLoaded(galeria, () => {
-        new Masonry(galeria, {
-          itemSelector: ".grid-item",
-          columnWidth: ".grid-item",
-          percentPosition: true
-        });
-        setTimeout(() => mostrarPagina(0), 300);
-      });
-    };
-
+    let imagenActualIndex = 0;
+    let msnry;
+  
     function mostrarPagina(pagina) {
-      const elementos = document.querySelectorAll('.grid-item');
-      totalPaginas = Math.ceil(elementos.length / porPagina);
+      galeria.innerHTML = '<div class="grid-sizer"></div>';
       const inicio = pagina * porPagina;
-      const fin = inicio + porPagina;
-
-      elementos.forEach((el, i) => {
-        el.style.display = (i >= inicio && i < fin) ? 'block' : 'none';
+      const fin = Math.min(inicio + porPagina, imagenes.length);
+      const fragment = document.createDocumentFragment();
+  
+      for (let i = inicio; i < fin; i++) {
+        const div = document.createElement('div');
+        div.className = 'grid-item';
+        const img = document.createElement('img');
+        img.src = `imagenes/${imagenes[i]}`;
+        img.loading = 'lazy';
+        img.alt = imagenes[i];
+        img.addEventListener('click', () => mostrarLightbox(img.src, i));
+        div.appendChild(img);
+        fragment.appendChild(div);
+      }
+  
+      galeria.appendChild(fragment);
+  
+      imagesLoaded(galeria, () => {
+        if (!msnry) {
+          msnry = new Masonry(galeria, {
+            itemSelector: '.grid-item',
+            columnWidth: '.grid-sizer',
+            percentPosition: true
+          });
+        } else {
+          msnry.reloadItems();
+          msnry.layout();
+        }
       });
-
+  
+      // Pre-cargar siguiente página
+      const siguienteInicio = (pagina + 1) * porPagina;
+      for (let i = siguienteInicio; i < siguienteInicio + porPagina && i < imagenes.length; i++) {
+        const preloadImg = new Image();
+        preloadImg.src = `imagenes/${imagenes[i]}`;
+      }
+  
       paginaActual = pagina;
-
-      document.getElementById('flechaIzquierda').style.visibility = pagina > 0 ? 'visible' : 'hidden';
-      document.getElementById('flechaDerecha').style.visibility = pagina < totalPaginas - 1 ? 'visible' : 'hidden';
-      document.getElementById('numeroPagina').textContent = `${pagina + 1} / ${totalPaginas}`;
     }
-
-    function paginaAnterior() {
-      if (paginaActual > 0) {
-        mostrarPagina(paginaActual - 1);
-      }
+  
+    function mostrarLightbox(src, index) {
+      lightboxImg.classList.remove('fade-in');
+      void lightboxImg.offsetWidth;
+      lightboxImg.src = src;
+      lightboxLink.href = src;
+      imagenActualIndex = index;
+      lightbox.classList.add('show');
+      lightboxImg.classList.add('fade-in');
+      document.body.classList.add('no-scroll');
     }
-
-    function paginaSiguiente() {
-      if (paginaActual < totalPaginas - 1) {
-        mostrarPagina(paginaActual + 1);
-      }
+  
+    function cerrarLightbox() {
+      lightbox.classList.remove('show');
+      document.body.classList.remove('no-scroll');
     }
-
-    window.addEventListener('scroll', () => {
-      const paginacion = document.getElementById('paginacion');
-      if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
-        paginacion.style.visibility = 'visible';
-      } else {
-        paginacion.style.visibility = 'hidden';
-      }
+  
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('show')) return;
+      if (e.key === 'ArrowRight') navegarLightbox(1);
+      if (e.key === 'ArrowLeft') navegarLightbox(-1);
+      if (e.key === 'Escape') cerrarLightbox();
     });
+  
+    function navegarLightbox(direccion) {
+      imagenActualIndex += direccion;
+      if (imagenActualIndex < 0) imagenActualIndex = 0;
+      if (imagenActualIndex >= imagenes.length) imagenActualIndex = imagenes.length - 1;
+      const nuevaSrc = `imagenes/${imagenes[imagenActualIndex]}`;
+      lightboxImg.src = nuevaSrc;
+      lightboxLink.href = nuevaSrc;
+    }
+  
+    // Navegación por arrastre horizontal
+    let startX = 0;
+    galeria.addEventListener('touchstart', e => {
+      startX = e.touches[0].clientX;
+    });
+  
+    galeria.addEventListener('touchend', e => {
+      if (startX === null) return;
+      const endX = e.changedTouches[0].clientX;
+      const delta = startX - endX;
+      if (Math.abs(delta) > 50) {
+        if (delta > 0 && (paginaActual + 1) * porPagina < imagenes.length) {
+          mostrarPagina(paginaActual + 1);
+        } else if (delta < 0 && paginaActual > 0) {
+          mostrarPagina(paginaActual - 1);
+        }
+      }
+      startX = null;
+    });
+  
+    // Opcional: soporte con mouse también
+    let mouseStartX = null;
+    galeria.addEventListener('mousedown', e => {
+      mouseStartX = e.clientX;
+    });
+  
+    galeria.addEventListener('mouseup', e => {
+      if (mouseStartX === null) return;
+      const delta = mouseStartX - e.clientX;
+      if (Math.abs(delta) > 50) {
+        if (delta > 0 && (paginaActual + 1) * porPagina < imagenes.length) {
+          mostrarPagina(paginaActual + 1);
+        } else if (delta < 0 && paginaActual > 0) {
+          mostrarPagina(paginaActual - 1);
+        }
+      }
+      mouseStartX = null;
+    });
+  
+    lightbox.addEventListener('click', e => {
+      if (e.target === lightbox) cerrarLightbox();
+    });
+  
+    mostrarPagina(0);
+    
+    document.getElementById('flechaIzquierda').addEventListener('click', () => {
+  if (paginaActual > 0) {
+    mostrarPagina(paginaActual - 1);
+  }
+});
 
-    cargarImagenes();
+document.getElementById('flechaDerecha').addEventListener('click', () => {
+  if ((paginaActual + 1) * porPagina < imagenes.length) {
+    mostrarPagina(paginaActual + 1);
+  }
+});
+
+document.getElementById('flechaIzquierda').addEventListener('click', () => {
+  if (paginaActual > 0) {
+    mostrarPagina(paginaActual - 1);
+  }
+});
+
+document.getElementById('flechaDerecha').addEventListener('click', () => {
+  if ((paginaActual + 1) * porPagina < imagenes.length) {
+    mostrarPagina(paginaActual + 1);
+  }
+});
+
+
+
   </script>
+
+<button id="flechaIzquierda" class="flecha-navegacion flecha-izquierda">&#10094;</button>
+<button id="flechaDerecha" class="flecha-navegacion flecha-derecha">&#10095;</button>
+
+
+    
 </body>
 </html>

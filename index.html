@@ -272,8 +272,9 @@
 
   <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
   <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
-  <script src="imagenes.js"></script>
- 
+  <script src="imagenes_baja.js"></script>
+  <script src="imagenes_alta.js"></script>
+   
   <script>
     const galeria = document.getElementById('galeria');
     const lightbox = document.getElementById('lightbox');
@@ -288,16 +289,16 @@
     function mostrarPagina(pagina) {
       galeria.innerHTML = '<div class="grid-sizer"></div>';
       const inicio = pagina * porPagina;
-      const fin = Math.min(inicio + porPagina, imagenes.length);
+      const fin = Math.min(inicio + porPagina, imagenesBaja.length);
       const fragment = document.createDocumentFragment();
   
       for (let i = inicio; i < fin; i++) {
         const div = document.createElement('div');
         div.className = 'grid-item';
         const img = document.createElement('img');
-        img.src = `imagenes/${imagenes[i]}`;
+        img.src = `imagenesBaja/${imagenesBaja[i]}`;
         img.loading = 'lazy';
-        img.alt = imagenes[i];
+        img.alt = imagenesAlta[i];
         img.addEventListener('click', () => mostrarLightbox(img.src, i));
         div.appendChild(img);
         fragment.appendChild(div);
@@ -320,9 +321,9 @@
   
       // Pre-cargar siguiente página
       const siguienteInicio = (pagina + 1) * porPagina;
-      for (let i = siguienteInicio; i < siguienteInicio + porPagina && i < imagenes.length; i++) {
+      for (let i = siguienteInicio; i < siguienteInicio + porPagina && i < imagenesBaja.length; i++) {
         const preloadImg = new Image();
-        preloadImg.src = `imagenes/${imagenes[i]}`;
+        preloadImg.src = `imagenesBaja/${imagenesBaja[i]}`;
       }
   
       paginaActual = pagina;
@@ -354,8 +355,8 @@
     function navegarLightbox(direccion) {
       imagenActualIndex += direccion;
       if (imagenActualIndex < 0) imagenActualIndex = 0;
-      if (imagenActualIndex >= imagenes.length) imagenActualIndex = imagenes.length - 1;
-      const nuevaSrc = `imagenes/${imagenes[imagenActualIndex]}`;
+      if (imagenActualIndex >= imagenesBaja.length) imagenActualIndex = imagenesBaja.length - 1;
+      const nuevaSrc = 'imagenesBaja/${imagenesBaja[imagenActualIndex]}';
       lightboxImg.src = nuevaSrc;
       lightboxLink.href = nuevaSrc;
     }
@@ -371,7 +372,7 @@
       const endX = e.changedTouches[0].clientX;
       const delta = startX - endX;
       if (Math.abs(delta) > 50) {
-        if (delta > 0 && (paginaActual + 1) * porPagina < imagenes.length) {
+        if (delta > 0 && (paginaActual + 1) * porPagina < imagenesBaja.length) {
           mostrarPagina(paginaActual + 1);
         } else if (delta < 0 && paginaActual > 0) {
           mostrarPagina(paginaActual - 1);
@@ -390,7 +391,7 @@
       if (mouseStartX === null) return;
       const delta = mouseStartX - e.clientX;
       if (Math.abs(delta) > 50) {
-        if (delta > 0 && (paginaActual + 1) * porPagina < imagenes.length) {
+        if (delta > 0 && (paginaActual + 1) * porPagina < imagenesBaja.length) {
           mostrarPagina(paginaActual + 1);
         } else if (delta < 0 && paginaActual > 0) {
           mostrarPagina(paginaActual - 1);
@@ -409,14 +410,14 @@
   if (paginaActual > 0) {
     mostrarPagina(paginaActual - 1);
   } else {
-    const ultimaPagina = Math.floor((imagenes.length - 1) / porPagina);
+    const ultimaPagina = Math.floor((imagenesBaja.length - 1) / porPagina);
     mostrarPagina(ultimaPagina);
   }
 });
 
 
 document.getElementById('flechaDerecha').addEventListener('click', () => {
-  if ((paginaActual + 1) * porPagina < imagenes.length) {
+  if ((paginaActual + 1) * porPagina < imagenesBaja.length) {
     mostrarPagina(paginaActual + 1);
   } else {
     mostrarPagina(0);

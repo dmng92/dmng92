@@ -2,8 +2,8 @@ const fs = require('fs');
 const path = require('path');
 
 const config = [
-  { carpeta: './imagenes_baja', nombreConstante: 'imagenesBaja', salida: 'imagenes_baja.js' },
-  { carpeta: './imagenes', nombreConstante: 'imagenesAlta', salida: 'imagenes_alta.js' },
+  { carpeta: './imagenesBaja', nombreConstante: 'imagenesBaja', salida: 'imagenesBaja.js' },
+  { carpeta: './imagenesAlta', nombreConstante: 'imagenesAlta', salida: 'imagenesAlta.js' },
 ];
 
 const extensionesValidas = ['.jpg', '.jpeg', '.png', '.webp', '.JPG', '.JPEG', '.PNG', '.WEBP', '.jfif'];

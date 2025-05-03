@@ -10,22 +10,22 @@
   display: none;
   position: fixed;
   bottom: 20px;
-  font-size: 1.2rem;       /* Antes: 2rem */
-  background: rgba(255, 255, 255, 0.04); /* Más sutil */
-  color: #888;             /* Más discreto */
-  border: 1px solid #444;  /* Borde fino y sobrio */
+  font-size: 1rem;                 /* Más pequeña */
+  background: transparent;         /* Sin fondo */
+  color: #888;                     /* Gris tenue */
+  border: none;                    /* Sin borde */
   cursor: pointer;
   z-index: 1000;
-  padding: 0.3rem 0.5rem;  /* Más pequeño */
-  border-radius: 50%;
-  transition: background 0.2s, color 0.2s, border 0.2s;
+  padding: 0.4rem;
+  border-radius: 4px;
+  transition: color 0.2s ease, background 0.2s ease;
 }
 
 .flecha-navegacion:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff;
-  border-color: #666;
+  color: #fff;                     /* Se aclara al pasar el mouse */
+  background: rgba(255, 255, 255, 0.05);  /* Fondo sutil al hacer hover */
 }
+
 
 
   .flecha-izquierda {

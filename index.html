@@ -330,15 +330,16 @@
     }
   
     function mostrarLightbox(src, index) {
-      lightboxImg.classList.remove('fade-in');
-      void lightboxImg.offsetWidth;
-      lightboxImg.src = src;
-      lightboxLink.href = src;
-      imagenActualIndex = index;
-      lightbox.classList.add('show');
-      lightboxImg.classList.add('fade-in');
-      document.body.classList.add('no-scroll');
-    }
+  lightboxImg.classList.remove('fade-in');
+  void lightboxImg.offsetWidth;
+  lightboxImg.src = src;
+  lightboxLink.href = `imagenesAlta/${imagenesAlta[index]}`; // usa alta resolución
+  imagenActualIndex = index;
+  lightbox.classList.add('show');
+  lightboxImg.classList.add('fade-in');
+  document.body.classList.add('no-scroll');
+}
+
   
     function cerrarLightbox() {
       lightbox.classList.remove('show');
@@ -353,13 +354,14 @@
     });
   
     function navegarLightbox(direccion) {
-      imagenActualIndex += direccion;
-      if (imagenActualIndex < 0) imagenActualIndex = 0;
-      if (imagenActualIndex >= imagenesBaja.length) imagenActualIndex = imagenesBaja.length - 1;
-const nuevaSrc = `imagenesBaja/${imagenesBaja[imagenActualIndex]}`;
-      lightboxImg.src = nuevaSrc;
-      lightboxLink.href = nuevaSrc;
-    }
+  imagenActualIndex += direccion;
+  if (imagenActualIndex < 0) imagenActualIndex = 0;
+  if (imagenActualIndex >= imagenesBaja.length) imagenActualIndex = imagenesBaja.length - 1;
+  const nuevaSrc = `imagenesBaja/${imagenesBaja[imagenActualIndex]}`;
+  lightboxImg.src = nuevaSrc;
+  lightboxLink.href = `imagenesAlta/${imagenesAlta[imagenActualIndex]}`; // usa alta resolución
+}
+
   
     // Navegación por arrastre horizontal
     let startX = 0;

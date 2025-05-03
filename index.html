@@ -296,7 +296,7 @@
         const div = document.createElement('div');
         div.className = 'grid-item';
         const img = document.createElement('img');
-        img.src = `${imagenesBaja[i]}`;
+        img.src = `imagenesBaja/${imagenesBaja[i]}`;
         img.loading = 'lazy';
         img.alt = imagenesAlta[i];
         img.addEventListener('click', () => mostrarLightbox(img.src, i));

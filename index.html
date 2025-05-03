@@ -323,7 +323,7 @@
       const siguienteInicio = (pagina + 1) * porPagina;
       for (let i = siguienteInicio; i < siguienteInicio + porPagina && i < imagenesBaja.length; i++) {
         const preloadImg = new Image();
-        preloadImg.src = `${imagenesBaja[i]}`;
+        preloadImg.src = `imagenesBaja/${imagenesBaja[i]}`;
       }
   
       paginaActual = pagina;
@@ -356,7 +356,7 @@
       imagenActualIndex += direccion;
       if (imagenActualIndex < 0) imagenActualIndex = 0;
       if (imagenActualIndex >= imagenesBaja.length) imagenActualIndex = imagenesBaja.length - 1;
-      const nuevaSrc = `${imagenesBaja[imagenActualIndex]}`;
+const nuevaSrc = `imagenesBaja/${imagenesBaja[imagenActualIndex]}`;
       lightboxImg.src = nuevaSrc;
       lightboxLink.href = nuevaSrc;
     }

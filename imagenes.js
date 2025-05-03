@@ -1,4 +1,4 @@
-const imagenesAlta = [
+const imagenes = [
   "foto01.jpg",
   "53464685660_330e4c5410_o.jpg",
   "53464685580_e6123c5f38_o.jpg",

@@ -20,11 +20,12 @@ config.forEach(({ carpeta, nombreConstante, salida }) => {
       fs.statSync(path.join(carpeta, a)).mtimeMs - fs.statSync(path.join(carpeta, b)).mtimeMs
     );
 
-  const contenido = `const ${nombreConstante} = ${JSON.stringify(
-    archivos.map(file => path.join(carpeta.replace('./', ''), file)),
-    null,
-    2
-  )};`;
+    const contenido = `const ${nombreConstante} = ${JSON.stringify(
+      archivos,
+      null,
+      2
+    )};`;
+   
 
   fs.writeFileSync(salida, contenido);
   console.log(`✅ ${salida} generado con`, archivos.length, 'archivo(s).');
